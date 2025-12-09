@@ -6,8 +6,6 @@ const NavBar = () => {
     { path: "/", label: "Home" },
     { path: "/join-employee", label: "Join as Employee" },
     { path: "/join-hr", label: "Join as HR Manager" },
-    { path: "/send-parcel", label: "Send Parcel" },
-    { path: "/coverage", label: "Coverage" },
   ];
 
   return (
@@ -71,7 +69,7 @@ const NavBar = () => {
 
       {/* Navbar End */}
       <div className="navbar-end">
-        <Link to="/rider" className="btn btn-primary text-black mx-4">
+        <Link to="/login" className="btn btn-primary text-black mx-4">
           Log in
         </Link>
       </div>
