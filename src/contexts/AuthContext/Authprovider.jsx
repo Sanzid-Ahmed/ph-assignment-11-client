@@ -11,21 +11,30 @@ const Authprovider = ({children}) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
+
+    //1. Register a new user: 
     const registerUser = (email, password) => {
         setLoading(true);
         return createUserWithEmailAndPassword(auth, email, password)
     }
 
+
+    //2. Sign in
     const signInUser = (email, password) => {
         setLoading(true);
         return signInWithEmailAndPassword(auth, email, password)
     }
 
+
+
+    //3. Sign in with google
     const signInGoogle = () => {
         setLoading(true);
         return signInWithPopup(auth, googleProvider);
     }
 
+
+    //4. Log out
     const logOut = () => {
         setLoading(true);
         return signOut(auth);
