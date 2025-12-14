@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaUserCircle, FaSave, FaBuilding, FaEnvelope } from 'react-icons/fa';
-import useAuth from '../../hooks/useAuth';
-import useAxiosSecure from '../../hooks/useAxiosSecure';
-import LoadingSpinner from '../../components/common/LoadingSpinner';
+import useAuth from '../../hooks/useAuth.jsx';
+import useAxiosSecure from '../../hooks/useAxiosSecure.jsx';
+import LoadingSpinner from '../../components/common/LoadingSpinner.jsx';
 import { toast } from 'react-toastify';
 import moment from 'moment';
+
 
 const ProfilePage = () => {
     const { user, role, loading: authLoading, refetchUser } = useAuth();
