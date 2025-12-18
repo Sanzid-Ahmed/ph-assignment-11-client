@@ -1,56 +1,91 @@
-// src/components/HomePage/FeaturesSection.jsx
-
 import React from "react";
-import { FaBoxes, FaUsers, FaChartLine, FaStar } from "react-icons/fa";
+import { FaBoxes, FaUsers, FaChartLine, FaStar, FaShieldAlt, FaSyncAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
-console.log(motion);
-
+console.log(motion)
 
 const features = [
-  { icon: FaBoxes, title: "Prevent Asset Loss", text: "Ensure every laptop, monitor, and keyboard is always accounted for." },
-  { icon: FaUsers, title: "Boost Accountability", text: "Track who holds which asset with full clarity and transparency." },
-  { icon: FaChartLine, title: "Streamline HR Workflow", text: "Automated requests, approvals, and affiliation processes." },
-];
-
-const coreFeatures = [
-    { icon: FaBoxes, title: "Inventory Management", text: "Track all items in real-time." },
-    { icon: FaUsers, title: "Auto-Affiliation", text: "Employees become affiliated on first approval." },
-    { icon: FaChartLine, title: "Usage Analytics", text: "Visual dashboards with Recharts." },
-    { icon: FaStar, title: "Stripe Payments", text: "Easy plan upgrades." },
+  { 
+    icon: FaBoxes, 
+    title: "Asset Inventory", 
+    text: "Real-time tracking of laptops, keyboards, and office furniture.",
+    color: "text-blue-600"
+  },
+  { 
+    icon: FaUsers, 
+    title: "Team Management", 
+    text: "Effortlessly manage employee affiliations and equipment access.",
+    color: "text-purple-600"
+  },
+  { 
+    icon: FaChartLine, 
+    title: "Data Insights", 
+    text: "Visual analytics to understand asset distribution and needs.",
+    color: "text-green-600"
+  },
+  { 
+    icon: FaStar, 
+    title: "Easy Upgrades", 
+    text: "Scale your employee limit instantly with secure Stripe payments.",
+    color: "text-orange-600"
+  },
+  { 
+    icon: FaShieldAlt, 
+    title: "Loss Prevention", 
+    text: "Full accountability for returnable and non-returnable items.",
+    color: "text-red-600"
+  },
+  { 
+    icon: FaSyncAlt, 
+    title: "Quick Requests", 
+    text: "Streamlined workflow for asset requests and HR approvals.",
+    color: "text-cyan-600"
+  },
 ];
 
 const FeaturesSection = ({ itemVariants }) => {
   return (
-    <>
-      <motion.section className="py-16 text-center" variants={itemVariants}>
-        <h2 className="text-4xl font-bold mb-12 text-gray-800">Why Choose AssetVerse?</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <section id="features" className="py-16 bg-base-200/50">
+      <div className="container mx-auto px-6">
+        
+        {/* Compact Header */}
+        <motion.div 
+          className="text-center mb-12"
+          variants={itemVariants}
+        >
+          <span className="badge badge-primary badge-outline font-semibold mb-3">Core Capabilities</span>
+          <h2 className="text-3xl md:text-4xl font-bold text-neutral">
+            Streamline Your Corporate Workflow
+          </h2>
+          <div className="w-20 h-1 bg-primary mx-auto mt-4 rounded-full"></div>
+        </motion.div>
+
+        {/* High-Density Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((feature, index) => (
-            <motion.div key={index} className="card shadow-lg p-6 bg-white" variants={itemVariants}>
-              <feature.icon className="text-5xl text-accent mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-              <p className="text-gray-600">{feature.text}</p>
+            <motion.div 
+              key={index} 
+              variants={itemVariants}
+              whileHover={{ scale: 1.02 }}
+              className="group p-6 bg-base-100 rounded-2xl shadow-sm hover:shadow-md transition-all border border-base-300"
+            >
+              <div className="flex items-start gap-4">
+                <div className={`p-3 rounded-xl bg-base-200 group-hover:bg-primary/10 transition-colors`}>
+                  <feature.icon className={`text-2xl ${feature.color} group-hover:text-primary transition-colors`} />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-neutral mb-1">
+                    {feature.title}
+                  </h3>
+                  <p className="text-sm text-gray-500 leading-relaxed">
+                    {feature.text}
+                  </p>
+                </div>
+              </div>
             </motion.div>
           ))}
         </div>
-      </motion.section>
-
-      <hr className="my-16 border-t-2 border-gray-200" />
-
-      
-      <motion.section id="features" className="py-16 text-center" variants={itemVariants}>
-        <h2 className="text-4xl font-bold mb-12 text-gray-800">Core Features</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          {coreFeatures.map((feature, index) => (
-            <motion.div key={index} className="flex flex-col items-center p-4 bg-base-100 rounded-lg shadow-sm" variants={itemVariants}>
-              <feature.icon className="text-4xl text-secondary mb-3" />
-              <h4 className="font-semibold mb-1">{feature.title}</h4>
-              <p className="text-xs text-gray-500">{feature.text}</p>
-            </motion.div>
-          ))}
-        </div>
-      </motion.section>
-    </>
+      </div>
+    </section>
   );
 };
 

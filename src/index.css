@@ -20,3 +20,9 @@ body{
   font-style: normal;
   background-color: #EAECED;
 }
+
+.active{
+  background-color: #a966eb;
+  color: white;
+  font: bold;
+}

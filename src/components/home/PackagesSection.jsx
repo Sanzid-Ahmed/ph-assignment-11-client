@@ -1,61 +1,106 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaCheckCircle } from "react-icons/fa";
+import { FaCheckCircle, FaRocket } from "react-icons/fa";
 import { motion } from "framer-motion";
-console.log(motion);
-
+console.log(motion)
 
 const PackagesSection = ({ packages, loading, itemVariants }) => {
   return (
-    <motion.section id="packages" className="py-16 text-center" variants={itemVariants}>
-      <h2 className="text-4xl font-bold mb-4 text-gray-800">Choose Your Plan</h2>
-      <p className="text-lg mb-12 text-gray-600">Scale your team's asset management as you grow.</p>
+    <motion.section 
+      id="packages" 
+      className="py-20 bg-base-100" 
+      variants={itemVariants}
+    >
+      <div className="container mx-auto px-6">
+        {/* Header Section */}
+        <div className="text-center max-w-2xl mx-auto mb-16">
+          <motion.div variants={itemVariants}>
+            <span className="badge badge-outline badge-primary font-bold mb-4 px-4 py-3">Pricing Plans</span>
+            <h2 className="text-4xl md:text-5xl font-black text-neutral mb-6 leading-tight">
+              Scale Your Team Without <br />
+              <span className="text-primary">Breaking the Bank</span>
+            </h2>
+            <p className="text-gray-500 text-lg">
+              Transparent pricing designed to grow with your company inventory and workforce.
+            </p>
+          </motion.div>
+        </div>
 
-      {loading ? (
-        <div className="flex justify-center">
-          <span className="loading loading-dots loading-lg text-primary"></span>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {packages.map((pkg, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.2, delay: index * 0.1 }}
-              whileHover={{ scale: 1.05, boxShadow: "0 25px 50px -12px rgba(0,0,0,0.25)" }}
-              className={`card shadow-xl p-8 transition-transform duration-300 ${
-                pkg.name === "Standard" ? "bg-primary text-white scale-105" : "bg-white text-gray-800"
-              }`}
-            >
-              <h3 className={`text-3xl font-bold mb-2 ${pkg.name === "Standard" ? "text-white" : "text-primary"}`}>
-                {pkg.name}
-              </h3>
-              <p className="text-xl mb-4">Up to {pkg.employeeLimit} Employees</p>
-              <div className="text-5xl font-extrabold mb-6">
-                ${pkg.price}
-                <span className={`text-lg font-normal ml-2 ${pkg.name === "Standard" ? "text-white/80" : "text-gray-500"}`}>
-                  /month
-                </span>
-              </div>
-              <ul className="text-left space-y-3 mb-8">
-                {pkg.features.map((feature, fIndex) => (
-                  <li key={fIndex} className="flex items-center">
-                    <FaCheckCircle className={`mr-3 ${pkg.name === "Standard" ? "text-white" : "text-green-500"}`} />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-              <Link
-                to="/join-hr"
-                className={`btn btn-block ${pkg.name === "Standard" ? "btn-secondary text-primary" : "btn-primary"}`}
-              >
-                Get Started
-              </Link>
-            </motion.div>
-          ))}
-        </div>
-      )}
+        {loading ? (
+          <div className="flex flex-col items-center justify-center py-20">
+            <span className="loading loading-spinner loading-lg text-primary mb-4"></span>
+            <p className="text-gray-400 animate-pulse">Fetching latest plans...</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+            {packages.map((pkg, index) => {
+              const isStandard = pkg.name === "Standard";
+              
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  whileHover={{ y: -10 }}
+                  className={`relative card h-full p-1 transition-all duration-300 ${
+                    isStandard 
+                    ? "bg-gradient-to-b from-primary to-blue-700 text-white shadow-2xl scale-105 z-10 rounded-3xl" 
+                    : "bg-base-100 border border-base-200 shadow-xl rounded-3xl"
+                  }`}
+                >
+                  {isStandard && (
+                    <div className="absolute -top-5 left-1/2 -translate-x-1/2">
+                      <span className="badge badge-secondary font-bold px-6 py-4 shadow-lg flex gap-2">
+                        <FaRocket /> MOST POPULAR
+                      </span>
+                    </div>
+                  )}
+
+                  <div className="card-body p-8 flex flex-col">
+                    <div className="mb-6">
+                      <h3 className={`text-2xl font-black uppercase tracking-wider mb-2 ${isStandard ? "text-white" : "text-neutral"}`}>
+                        {pkg.name}
+                      </h3>
+                      <div className="flex items-baseline gap-1">
+                        <span className="text-5xl font-extrabold">${pkg.price}</span>
+                        <span className={`text-sm font-medium ${isStandard ? "text-white/80" : "text-gray-400"}`}>
+                          /setup
+                        </span>
+                      </div>
+                      <p className={`mt-4 text-sm font-semibold p-2 rounded-lg text-center ${isStandard ? "bg-white/20" : "bg-base-200 text-primary"}`}>
+                        Up to {pkg.employeeLimit} Employees
+                      </p>
+                    </div>
+
+                    <div className="divider opacity-20"></div>
+
+                    <ul className="flex-grow space-y-4 mb-8">
+                      {pkg.features.map((feature, fIndex) => (
+                        <li key={fIndex} className="flex items-start gap-3 text-sm">
+                          <FaCheckCircle className={`mt-1 flex-shrink-0 ${isStandard ? "text-white" : "text-primary"}`} />
+                          <span className={isStandard ? "text-white/90" : "text-gray-600"}>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <Link
+                      to="/join-hr"
+                      className={`btn btn-lg w-full border-none rounded-2xl transition-all duration-300 ${
+                        isStandard 
+                        ? "bg-white text-primary hover:bg-base-200" 
+                        : "btn-primary shadow-lg shadow-primary/20"
+                      }`}
+                    >
+                      Get Started
+                    </Link>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </motion.section>
   );
 };

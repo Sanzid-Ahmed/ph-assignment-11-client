@@ -11,8 +11,11 @@ import RegisterHR from "../pages/public/RegisterHR.jsx";
 import RegisterEmployee from "../pages/public/RegisterEmployee.jsx";
 import DashboardLayout from "../layouts/DashboardLayout.jsx";
 import AssetLists from "../pages/hr/assetLists.jsx";
-import AddAsset from "../pages/hr/addAsset.jsx";
 import AllRequests from "../pages/hr/AllRequests.jsx";
+import MyEmployeeList from "../pages/hr/MyEmployeeList.jsx";
+import UpgradePackage from "../pages/hr/UpgradePackage.jsx";
+import HrProfile from "../pages/hr/HrProfile.jsx";
+import AddAsset from "../pages/hr/addAsset.jsx";
 
 
 export const router = createBrowserRouter([
@@ -45,8 +48,20 @@ export const router = createBrowserRouter([
         element: <AddAsset />
       },
       {
-        path: "all-request",
+        path: "all-requests",
         element: <AllRequests /> 
+      },
+      {
+        path: "employees",
+        element: <MyEmployeeList />
+      },
+      {
+        path: "upgrade",
+        element: <UpgradePackage />
+      },
+      {
+        path: "hr-profile",
+        element: <HrProfile />
       }
     ]
   }, 

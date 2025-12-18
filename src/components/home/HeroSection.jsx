@@ -8,10 +8,10 @@ console.log(motion);
 const HeroSection = ({ itemVariants }) => {
   return (
     <motion.section
-      className="hero min-h-[60vh] bg-base-200 rounded-xl mb-16 shadow-xl"
+      className="hero min-h-[60vh] bg-base-200 rounded-xl mb-5 shadow-xl"
       variants={itemVariants}
     >
-      <div className="hero-content flex-col lg:flex-row-reverse p-12 gap-10">
+      <div className="hero-content flex-col lg:flex-row-reverse p-5 gap-10">
         <div className="lg:w-1/2 rounded-xl overflow-hidden shadow-lg">
           <img
             src="https://images.unsplash.com/photo-1551836022-4c4c79ecde51"
