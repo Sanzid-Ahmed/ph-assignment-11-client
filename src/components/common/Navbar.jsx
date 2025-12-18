@@ -1,124 +1,80 @@
-import React from 'react';
+import React from "react";
 import { Link, NavLink } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import useAuth from '../../hooks/useAuth';
-import { 
-    FaSignOutAlt, FaSignInAlt, FaUserCircle, 
-    FaBars, FaTimes, FaHome, FaUsers, FaUserShield 
-} from 'react-icons/fa';
+import useAuth from "../../hooks/useAuth";
+import useRole from "../../hooks/useRole";
 
 const Navbar = () => {
-    const { user, logOut, loading } = useAuth();
-    const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
-    const dashboardLink = user ? (user.role === 'hr' ? '/hr-dashboard' : '/employee-dashboard') : '';
+  const { user, logOut } = useAuth();
+  const { role } = useRole();
+  console.log("the role is", role)
 
-    const navLinks = (
-        <>
-            <li>
-                <NavLink 
-                    to="/" 
-                    className={({ isActive }) => isActive ? 'text-primary font-bold' : 'hover:text-primary'}
-                    onClick={() => setIsMenuOpen(false)}
-                >
-                    <FaHome className="inline mr-1" /> Home
-                </NavLink>
-            </li>
-            {user && (
-                <li>
-                    <NavLink 
-                        to={dashboardLink} 
-                        className={({ isActive }) => isActive ? 'text-primary font-bold' : 'hover:text-primary'}
-                        onClick={() => setIsMenuOpen(false)}
-                    >
-                        {user.role === 'hr' ? <FaUserShield className="inline mr-1" /> : <FaUsers className="inline mr-1" />}
-                        Dashboard
-                    </NavLink>
-                </li>
-            )}
-            {!user && (
-                <>
-                    <li>
-                        <NavLink to="/join-employee" className={({ isActive }) => isActive ? 'text-primary font-bold' : 'hover:text-primary'} onClick={() => setIsMenuOpen(false)}>Join as Employee</NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/join-hr" className={({ isActive }) => isActive ? 'text-primary font-bold' : 'hover:text-primary'} onClick={() => setIsMenuOpen(false)}>Join as HR</NavLink>
-                    </li>
-                </>
-            )}
+  const handleLogOut = () =>{
+    logOut().then().catch(error => {
+      console.log(error);
+    })
+  }
+
+
+  const publicLinks = <>
+    <li><NavLink to='/register-hr'>Join as HR</NavLink></li>
+    <li><NavLink to='/register-employee'>Join as Employee</NavLink></li>
+    {
+        (user && role === 'hr') && <>
+          <li><NavLink to="/dashboard/asset-lists">Manage Assets</NavLink></li>
         </>
-    );
+    }
+  </>
 
-    const handleLogout = () => {
-        logOut()
-            .then(() => toast.success("Successfully logged out."))
-            .catch(error => {
-                console.error("Logout Error:", error);
-                toast.error("Logout failed.");
-            });
-    };
+  
+  const hrLinks = <li><NavLink to="/dashboard/asset-lists">Manage Assets</NavLink></li>
+  const employeeLinks = <li><NavLink to="/dashboard/my-parcels">lala</NavLink></li>
+  const links = !user ? publicLinks : (role === "hr" ? hrLinks : employeeLinks);
 
-    return (
-        <nav className="bg-base-100 shadow-md sticky top-0 z-50">
-            <div className="container mx-auto flex items-center justify-between px-4 py-3">
-                
-                {/* Logo */}
-                <Link to="/" className="flex items-center text-xl font-extrabold text-primary">
-                    <FaUserShield className="text-3xl mr-2" /> AssetVerse
-                </Link>
-
-                {/* Desktop Menu */}
-                <ul className="hidden lg:flex space-x-4 font-semibold text-base">
-                    {navLinks}
-                </ul>
-
-                {/* Right Side: Auth / Profile */}
-                <div className="flex items-center space-x-2">
-                    {loading ? (
-                        <span className="loading loading-spinner loading-md"></span>
-                    ) : user ? (
-                        <div className="dropdown dropdown-end">
-                            <div tabIndex={0} className="btn btn-ghost btn-circle avatar tooltip tooltip-bottom" data-tip={user.displayName || user.email}>
-                                <div className="w-10 rounded-full">
-                                    {user.photoURL ? (
-                                        <img alt="User Avatar" src={user.photoURL} />
-                                    ) : (
-                                        <FaUserCircle className="w-10 h-10 text-gray-400" />
-                                    )}
-                                </div>
-                            </div>
-                            <ul tabIndex={0} className="menu menu-sm dropdown-content bg-base-100 rounded-box shadow mt-3 w-52 p-2">
-                                <li>
-                                    <Link to={`${dashboardLink}/profile`} className="justify-between">
-                                        Profile <span className="badge badge-primary">{user.role.toUpperCase()}</span>
-                                    </Link>
-                                </li>
-                                <li>
-                                    <button onClick={handleLogout}><FaSignOutAlt className="mr-1" /> Logout</button>
-                                </li>
-                            </ul>
-                        </div>
-                    ) : (
-                        <Link to="/login" className="btn btn-primary text-white flex items-center">
-                            <FaSignInAlt className="mr-1" /> Login
-                        </Link>
-                    )}
-
-                    {/* Mobile Menu Toggle */}
-                    <button className="btn btn-ghost lg:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-                        {isMenuOpen ? <FaTimes className="text-xl" /> : <FaBars className="text-xl" />}
-                    </button>
-                </div>
+  return (
+    <div>
+      <div className="navbar bg-base-100 shadow-sm">
+        <div className="navbar-start">
+          <div className="dropdown">
+            <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                {" "}
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h8m-8 6h16"
+                />{" "}
+              </svg>
             </div>
-
-            {/* Mobile Menu */}
-            {isMenuOpen && (
-                <ul className="lg:hidden bg-base-100 w-full text-center font-semibold space-y-2 py-4 shadow-md">
-                    {navLinks}
-                </ul>
-            )}
-        </nav>
-    );
+            <ul
+              tabIndex="-1"
+              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+            >
+              {links}
+            </ul>
+          </div>
+          <a className="btn btn-ghost text-xl">AssetVerse</a>
+        </div>
+        <div className="navbar-center hidden lg:flex">
+          <ul className="menu menu-horizontal px-1">
+            {links}
+          </ul>
+        </div>
+        <div className="navbar-end">
+          {
+            user ? <a onClick={handleLogOut} className="btn">Log Out</a> : <Link className="btn" to="/login">Log in</Link>
+          }
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Navbar;

@@ -1,63 +1,69 @@
-import { createContext, useEffect, useState } from "react";
-import { auth } from "../../firebase/firebase.init";
+import React, { useEffect, useState } from "react";
+import { AuthContext } from "./AuthContext";
 import {
-  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
   GoogleAuthProvider,
-  signInWithPopup,
   onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
+  updateProfile,
 } from "firebase/auth";
-
-export const AuthContext = createContext(null);
+import { auth } from "../../firebase/firebase.init";
 
 const googleProvider = new GoogleAuthProvider();
 
-const AuthProvider = ({ children }) => {
+const Authprovider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Email login
-  const signIn = (email, password) => {
+  const registerUser = (email, password) => {
+    setLoading(true);
+    return createUserWithEmailAndPassword(auth, email, password);
+  };
+
+  const signInUser = (email, password) => {
     setLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  // Google login
-  const googleSignIn = () => {
+  const signInGoogle = () => {
     setLoading(true);
     return signInWithPopup(auth, googleProvider);
   };
 
-  // Logout
   const logOut = () => {
     setLoading(true);
     return signOut(auth);
   };
 
-  // Observe auth state
+  const updateUserProfile = (profile) => {
+    return updateProfile(auth.currentUser, profile);
+  };
+
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, currentUser => {
+    const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setLoading(false);
     });
-
-    return () => unsubscribe();
+    return () => {
+      unSubscribe();
+    };
   }, []);
 
   const authInfo = {
     user,
     loading,
-    setLoading,
-    signIn,
-    googleSignIn,
+    registerUser,
+    signInUser,
+    signInGoogle,
     logOut,
+    updateUserProfile,
   };
 
   return (
-    <AuthContext.Provider value={authInfo}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
   );
 };
 
-export default AuthProvider;
+export default Authprovider;

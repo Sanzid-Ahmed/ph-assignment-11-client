@@ -1,33 +1,19 @@
-import React from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import React, { Children } from 'react';
 import useAuth from '../hooks/useAuth';
-import LoadingSpinner from '../components/common/LoadingSpinner';
-import { toast } from 'react-toastify';
+import { Navigate, useLocation } from 'react-router';
 
-const PrivateRoute = ({ children, requiredRole = null }) => {
-    const { user, loading, role } = useAuth();
-    const location = useLocation();
+const PrivateRoute = ({ children }) => {
 
-    if (loading) {
-        return <LoadingSpinner />;
+    const { user, loading } = useAuth();
+     const location = useLocation();
+
+    if(loading){
+        return <span className="loading loading-infinity loading-xl"></span>
+
     }
 
-    if (!user) {
-        toast.info('Please log in to access this page.');
-        return <Navigate to="/login" state={{ from: location }} replace />;
-    }
-
-    if (requiredRole && role !== requiredRole) {
-        toast.error(`Access denied. You must be an ${requiredRole.toUpperCase()} Manager to view this page.`);
-        
-        if (role === 'hr') {
-            return <Navigate to="/hr-dashboard" replace />;
-        }
-        if (role === 'employee') {
-            return <Navigate to="/employee-dashboard" replace />;
-        }
-        
-        return <Navigate to="/" replace />;
+    if(!user){
+        return <Navigate to="/login" state={location.pathname}></Navigate>
     }
 
     return children;

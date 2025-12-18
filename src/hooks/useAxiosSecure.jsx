@@ -1,51 +1,50 @@
 import axios from 'axios';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import useAuth from './useAuth';
 import { useNavigate } from 'react-router-dom';
 
 const axiosSecure = axios.create({
-    baseURL: 'http://localhost:5000/api/v1', 
-    withCredentials: true, 
-});
+    baseURL : 'http://localhost:3000'
+})
+
 
 const useAxiosSecure = () => {
-    const { logOut } = useAuth();
+
+    const { user, logOut } = useAuth();
     const navigate = useNavigate();
 
-    useEffect(() => {
-        
-        axiosSecure.interceptors.request.use((config) => {
-           
-            return config;
-        }, (error) => {
-            return Promise.reject(error);
-        });
+    useEffect(()=> {
+        const reqInterceptor = axiosSecure.interceptors.request.use(config => {
+            config.headers.Authorization = `Bearer ${user.accessToken}`
+            return config
+        })
 
-        axiosSecure.interceptors.response.use(
-            (response) => {
-                return response;
-            },
-            async (error) => {
-                const status = error.response?.status;
-                
-                if (status === 401 || status === 403) {
-                    console.error(`Authentication error detected: Status ${status}. Logging out.`);
-                    await logOut();
-                    navigate('/login');
-                }
-                return Promise.reject(error);
+
+        const resInterceptor = axiosSecure.interceptors.response.use((response)=>{
+            return response;
+        }, (error)=>{
+            console.log(error);
+
+
+
+            const statusCode = error.status;
+            if(statusCode === 401 || statusCode === 403){
+                logOut().then(()=>{
+                    navigate('/login')
+                })
             }
-        );
-        
-        const requestInterceptorId = axiosSecure.interceptors.request.use(config => config); // Get ID
-        const responseInterceptorId = axiosSecure.interceptors.response.use(res => res, err => Promise.reject(err)); // Get ID
-        
-        return () => {
-            axiosSecure.interceptors.request.eject(requestInterceptorId);
-            axiosSecure.interceptors.response.eject(responseInterceptorId);
-        };
-        
-    }, [logOut, navigate]);
+
+
+            return Promise.reject(error);
+        })
+
+
+        return ()=> {
+            axiosSecure.interceptors.request.eject(reqInterceptor);
+            axiosSecure.interceptors.response.eject(resInterceptor);
+        }
+
+    }, [user, logOut, navigate])
 
     return axiosSecure;
 };
