@@ -23,7 +23,7 @@ const AddAsset = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    if (!user?.email || companyName ) {
+    if (!user?.email || !companyName ) {
       toast.error("User info not available. Please login again.");
       return;
     }

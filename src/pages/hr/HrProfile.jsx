@@ -4,7 +4,14 @@ import { toast } from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import axios from "axios";
-import { FaBuilding, FaUserAlt, FaEnvelope, FaGem, FaUpload } from "react-icons/fa";
+import {
+  FaBuilding,
+  FaUserAlt,
+  FaEnvelope,
+  FaGem,
+  FaUpload,
+} from "react-icons/fa";
+import { useQuery } from "@tanstack/react-query";
 
 const img_hosting_key = import.meta.env.VITE_IMGBB_API_KEY;
 const img_hosting_api = `https://api.imgbb.com/1/upload?key=${img_hosting_key}`;
@@ -47,7 +54,10 @@ const HrProfile = () => {
         profileImage: imageUrl,
       };
 
-      const response = await axiosSecure.patch(`/users/update/${user?.email}`, updatedInfo);
+      const response = await axiosSecure.patch(
+        `/users/update/${user?.email}`,
+        updatedInfo
+      );
 
       if (response.data.modifiedCount > 0) {
         // 3. Update Firebase/Context state so the UI reflects changes immediately
@@ -64,6 +74,17 @@ const HrProfile = () => {
     }
   };
 
+  const { data: employees = [] } = useQuery({
+    queryKey: ["employees", user?.email],
+    enabled: !!user?.email,
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/employees/${user.email}`);
+      return res.data;
+    },
+  });
+
+  const number = employees.length;
+
   return (
     <div className="p-6 bg-base-100 min-h-screen">
       <div className="max-w-4xl mx-auto">
@@ -76,14 +97,25 @@ const HrProfile = () => {
               <div className="card-body items-center text-center">
                 <div className="avatar mb-4">
                   <div className="w-32 h-32 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                    <img src={user?.profileImage || user?.photoURL || "https://via.placeholder.com/150"} alt="Profile" />
+                    <img
+                      src={
+                        user?.profileImage ||
+                        user?.photoURL ||
+                        "https://via.placeholder.com/150"
+                      }
+                      alt="Profile"
+                    />
                   </div>
                 </div>
-                <h3 className="text-xl font-bold">{user?.name || user?.displayName}</h3>
-                <div className="badge badge-primary uppercase font-bold text-xs">{user?.role} Manager</div>
-                
+                <h3 className="text-xl font-bold">
+                  {user?.name || user?.displayName}
+                </h3>
+                <div className="badge badge-primary uppercase font-bold text-xs">
+                  {user?.role} Manager
+                </div>
+
                 <div className="divider"></div>
-                
+
                 <div className="w-full space-y-3 text-left">
                   <div className="flex items-center gap-3 text-sm">
                     <FaEnvelope className="text-primary" />
@@ -95,7 +127,9 @@ const HrProfile = () => {
                   </div>
                   <div className="flex items-center gap-3 text-sm">
                     <FaGem className="text-warning" />
-                    <span className="font-semibold">Plan: {user?.subscription || "Basic"}</span>
+                    <span className="font-semibold">
+                      Plan: {user?.subscription || "Basic"}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -104,9 +138,15 @@ const HrProfile = () => {
             {/* Subscription Stats Card */}
             <div className="stats stats-vertical shadow w-full mt-6 bg-neutral text-neutral-content">
               <div className="stat">
-                <div className="stat-title text-neutral-content opacity-70">Employee Limit</div>
-                <div className="stat-value text-2xl">{user?.currentEmployees || 0} / {user?.packageLimit || 5}</div>
-                <div className="stat-desc text-neutral-content opacity-70">Based on your plan</div>
+                <div className="stat-title text-neutral-content opacity-70">
+                  Employee Limit
+                </div>
+                <div className="stat-value text-2xl">
+                  {number || 0} / {user?.packageLimit || 5}
+                </div>
+                <div className="stat-desc text-neutral-content opacity-70">
+                  Based on your plan
+                </div>
               </div>
             </div>
           </div>
@@ -116,11 +156,13 @@ const HrProfile = () => {
             <div className="card bg-base-100 shadow-xl border border-base-200">
               <div className="card-body">
                 <h3 className="card-title mb-6">Edit Profile Information</h3>
-                
+
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
                   <div className="form-control">
                     <label className="label">
-                      <span className="label-text font-semibold">Full Name</span>
+                      <span className="label-text font-semibold">
+                        Full Name
+                      </span>
                     </label>
                     <div className="relative">
                       <FaUserAlt className="absolute left-4 top-4 text-gray-400" />
@@ -134,21 +176,27 @@ const HrProfile = () => {
 
                   <div className="form-control">
                     <label className="label">
-                      <span className="label-text font-semibold">Company Name</span>
+                      <span className="label-text font-semibold">
+                        Company Name
+                      </span>
                     </label>
                     <div className="relative">
                       <FaBuilding className="absolute left-4 top-4 text-gray-400" />
                       <input
                         type="text"
                         className="input input-bordered w-full pl-10"
-                        {...register("companyName", { required: "Company Name is required" })}
+                        {...register("companyName", {
+                          required: "Company Name is required",
+                        })}
                       />
                     </div>
                   </div>
 
                   <div className="form-control">
                     <label className="label">
-                      <span className="label-text font-semibold">Email Address (Read-Only)</span>
+                      <span className="label-text font-semibold">
+                        Email Address (Read-Only)
+                      </span>
                     </label>
                     <div className="relative">
                       <FaEnvelope className="absolute left-4 top-4 text-gray-400" />
@@ -163,7 +211,9 @@ const HrProfile = () => {
 
                   <div className="form-control">
                     <label className="label">
-                      <span className="label-text font-semibold">Change Profile Picture</span>
+                      <span className="label-text font-semibold">
+                        Change Profile Picture
+                      </span>
                     </label>
                     <input
                       type="file"
@@ -173,9 +223,11 @@ const HrProfile = () => {
                   </div>
 
                   <div className="form-control mt-8">
-                    <button 
-                      type="submit" 
-                      className={`btn btn-primary gap-2 ${loading ? 'loading' : ''}`}
+                    <button
+                      type="submit"
+                      className={`btn btn-primary gap-2 ${
+                        loading ? "loading" : ""
+                      }`}
                       disabled={loading}
                     >
                       {!loading && <FaUpload />}
