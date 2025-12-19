@@ -18,7 +18,7 @@ const AllRequests = () => {
   const fetchRequests = async () => {
     setLoading(true);
     try {
-      const res = await axiosSecure.get(`/requests/hr?email=${user?.email}&search=${search}`);
+      const res = await axiosSecure.get(`/requests/${user?.email}`);
       setRequests(res.data);
     } catch (error) {
       console.error("Error fetching requests:", error);
