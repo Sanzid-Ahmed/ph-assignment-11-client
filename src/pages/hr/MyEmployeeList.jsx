@@ -12,10 +12,12 @@ const MyEmployeeList = () => {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
 
+  // Fetch employees from backend
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await axiosSecure.get(`/employees?companyName=${user?.companyName}`);
+        const response = await axiosSecure.get(`/employees/${user?.email}`);
+        console.log("Fetched employees:", response.data);
         setEmployees(response.data || []);
       } catch (error) {
         console.error(error);
@@ -25,16 +27,17 @@ const MyEmployeeList = () => {
       }
     };
 
-    if (user?.companyName) fetchEmployees();
+    if (user?.email) fetchEmployees();
   }, [axiosSecure, user]);
 
+  // Remove employee handler
   const handleRemove = async (employeeEmail) => {
-    const confirm = window.confirm("Are you sure you want to remove this employee?");
-    if (!confirm) return;
+    const confirmDelete = window.confirm("Are you sure you want to remove this employee?");
+    if (!confirmDelete) return;
 
     try {
       await axiosSecure.delete(`/employees/${employeeEmail}`);
-      setEmployees((prev) => prev.filter((emp) => emp.email !== employeeEmail));
+      setEmployees((prev) => prev.filter((emp) => emp.employeeEmail !== employeeEmail));
       toast.success("Employee removed successfully");
     } catch (error) {
       console.error(error);
@@ -42,17 +45,18 @@ const MyEmployeeList = () => {
     }
   };
 
+  // Filter employees based on search query
   const filteredEmployees = employees.filter(
     (emp) =>
-      emp.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      emp.email.toLowerCase().includes(searchQuery.toLowerCase())
+      (emp.employeeName ?? "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (emp.employeeEmail ?? "").toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
       <h2 className="text-3xl font-bold mb-6 text-center">My Employee List</h2>
 
-      {/* Search */}
+      {/* Search input */}
       <div className="mb-4 flex justify-end">
         <input
           type="text"
@@ -63,7 +67,7 @@ const MyEmployeeList = () => {
         />
       </div>
 
-      {/* Table */}
+      {/* Employees table */}
       <div className="overflow-x-auto">
         <table className="table table-zebra w-full">
           <thead>
@@ -85,18 +89,18 @@ const MyEmployeeList = () => {
               </tr>
             ) : filteredEmployees.length > 0 ? (
               filteredEmployees.map((emp, index) => (
-                <tr key={emp.email}>
+                <tr key={emp.employeeEmail}>
                   <td>{index + 1}</td>
                   <td className="flex items-center gap-2">
                     <FiUser className="text-gray-500" />
-                    {emp.name}
+                    {emp.employeeName}
                   </td>
-                  <td>{emp.email}</td>
-                  <td>{emp.role}</td>
-                  <td>{new Date(emp.createdAt).toLocaleDateString()}</td>
+                  <td>{emp.employeeEmail}</td>
+                  <td>{"employee"}</td>
+                  <td>{new Date(emp.assignedAt).toLocaleDateString()}</td>
                   <td className="flex gap-2">
                     <button
-                      onClick={() => handleRemove(emp.email)}
+                      onClick={() => handleRemove(emp.employeeEmail)}
                       className="btn btn-sm btn-error gap-2 flex items-center"
                     >
                       <FiTrash2 />
