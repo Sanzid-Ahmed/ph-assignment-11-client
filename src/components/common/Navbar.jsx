@@ -19,8 +19,8 @@ const Navbar = () => {
   const publicLinks = (
     <>
       {homeLink}
-      <li><NavLink to='/join-employee'>Join as Employee</NavLink></li>
-      <li><NavLink to='/join-hr'>Join as HR</NavLink></li>
+      <li><NavLink to='/register-employee'>Join as Employee</NavLink></li>
+      <li><NavLink to='/register-hr'>Join as HR</NavLink></li>
     </>
   );
 

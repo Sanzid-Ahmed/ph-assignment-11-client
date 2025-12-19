@@ -16,6 +16,7 @@ import MyEmployeeList from "../pages/hr/MyEmployeeList.jsx";
 import UpgradePackage from "../pages/hr/UpgradePackage.jsx";
 import HrProfile from "../pages/hr/HrProfile.jsx";
 import AddAsset from "../pages/hr/addAsset.jsx";
+import EmployeeProfile from "../pages/employee/EmployeeProfile.jsx";
 
 
 export const router = createBrowserRouter([
@@ -62,6 +63,11 @@ export const router = createBrowserRouter([
       {
         path: "hr-profile",
         element: <HrProfile />
+      },
+      //employee
+      {
+        path: "employee-profile",
+        element: <EmployeeProfile />
       }
     ]
   }, 
