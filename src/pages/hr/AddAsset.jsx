@@ -4,10 +4,14 @@ import { toast } from "react-hot-toast";
 import { FiTag, FiImage, FiLayers, FiHash } from "react-icons/fi";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useUserData from "../../hooks/useUserData";
 
 const AddAsset = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
+  const { userData } = useUserData();
+  const { companyName } = userData;
+
 
   const {
     register,
@@ -18,7 +22,7 @@ const AddAsset = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    if (!user?.email || !user?.companyName) {
+    if (!user?.email || companyName ) {
       toast.error("User info not available. Please login again.");
       return;
     }
@@ -30,7 +34,7 @@ const AddAsset = () => {
       productQuantity: Number(data.productQuantity),
       availableQuantity: Number(data.productQuantity),
       hrEmail: user.email,
-      companyName: user.companyName,
+      companyName: companyName,
       dateAdded: new Date(),
     };
 
