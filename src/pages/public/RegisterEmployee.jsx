@@ -65,7 +65,7 @@ const RegisterEmployee = () => {
   return (
     <div className="card bg-base-100 w-full mx-auto shrink-0 shadow-2xl p-10">
       <h3 className="text-3xl text-center">Welcome to AssetVerse</h3>
-        <p className="text-center">Please Register</p>
+        <p className="text-center">Please Register as Employee</p>
       <form className="card-body" onSubmit={handleSubmit(handleRegistration)}>
         <fieldset className="fieldset mx-auto">
 

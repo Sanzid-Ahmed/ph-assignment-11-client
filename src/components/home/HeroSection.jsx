@@ -28,11 +28,11 @@ const HeroSection = ({ itemVariants }) => {
             physical assets and employee accountability—without paperwork.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-            <Link to="/join-hr" className="btn btn-primary btn-lg shadow-lg">
+            <Link to="/register-hr" className="btn btn-primary btn-lg shadow-lg">
               Join as HR Manager <FaUserTie className="ml-2" />
             </Link>
             <Link
-              to="/join-employee"
+              to="/register-employee"
               className="btn btn-outline btn-primary btn-lg shadow-lg"
             >
               Join as Employee <FaUser className="ml-2" />

@@ -42,8 +42,8 @@ const Login = () => {
           <button className="btn btn-neutral mt-4">Login</button>
         </fieldset>
         <p className="text-center">New to AssetVerse? <br />
-        <Link state={location.state} className="text-blue-800 underline" to="/auth/register-hr">Register as HR</Link><br />
-        <Link state={location.state} className="text-blue-400 underline" to="/auth/register-employee">Register as employee</Link></p>
+        <Link state={location.state} className="text-blue-800 underline" to="/register-hr">Register as HR</Link><br />
+        <Link state={location.state} className="text-blue-400 underline" to="/register-employee">Register as employee</Link></p>
       </form>
     </div>
   );

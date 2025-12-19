@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
@@ -9,17 +8,13 @@ import Swal from "sweetalert2";
 const MyAssets = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const [search, setSearch] = useState("");
-  const [filterStatus, setFilterStatus] = useState("");
-  const [filterType, setFilterType] = useState("");
 
   // Fetch Requests for the logged-in employee
   const { data: assets = [], refetch, isLoading } = useQuery({
-    queryKey: ["my-assets", user?.email, search, filterStatus, filterType],
+    queryKey: ["my-assets", user?.email],
+    enabled: !!user?.email,
     queryFn: async () => {
-      const res = await axiosSecure.get(`/my-requests/${user?.email}`, {
-        params: { search, status: filterStatus, type: filterType }
-      });
+      const res = await axiosSecure.get(`/assets/${user?.email}`);
       return res.data;
     },
   });
@@ -49,8 +44,15 @@ const MyAssets = () => {
   };
 
   const handlePrint = (asset) => {
-    // Logic for generating PDF (usually using a library like jsPDF or react-pdf)
-    toast.success(`Generating Receipt for ${asset.assetName}...`);
+    Swal.fire({
+      title: "Print",
+      text: "Print Done!",
+      icon: "success",
+      showCancelButton: true,
+      confirmButtonColor: "#a966eb",
+      cancelButtonColor: "#d33",
+      confirmButtonText: `Print success ${asset.assetName} Receipt`
+    })
   };
 
   return (
@@ -66,7 +68,7 @@ const MyAssets = () => {
              <input 
                className="input input-bordered join-item input-sm md:input-md focus:outline-none" 
                placeholder="Search Asset Name..." 
-               onChange={(e) => setSearch(e.target.value)}
+               
              />
              <button className="btn join-item btn-primary btn-sm md:btn-md"><FaSearch /></button>
            </div>
@@ -77,7 +79,7 @@ const MyAssets = () => {
       <div className="flex flex-wrap gap-4 bg-base-100 p-4 rounded-2xl border border-base-200 shadow-sm">
         <select 
           className="select select-bordered select-sm md:select-md grow md:grow-0"
-          onChange={(e) => setFilterStatus(e.target.value)}
+          
         >
           <option value="">All Status</option>
           <option value="pending">Pending</option>
@@ -86,7 +88,6 @@ const MyAssets = () => {
 
         <select 
           className="select select-bordered select-sm md:select-md grow md:grow-0"
-          onChange={(e) => setFilterType(e.target.value)}
         >
           <option value="">All Types</option>
           <option value="Returnable">Returnable</option>
@@ -124,7 +125,7 @@ const MyAssets = () => {
                     </td>
                     <td className="text-sm">{new Date(asset.requestDate).toLocaleDateString()}</td>
                     <td className="text-sm">
-                      {asset.approvalDate ? new Date(asset.approvalDate).toLocaleDateString() : "---"}
+                      {asset.approvedAt ? new Date(asset.approvedAt).toLocaleDateString() : "---"}
                     </td>
                     <td>
                       {asset.status === "pending" ? (
@@ -133,12 +134,12 @@ const MyAssets = () => {
                         </div>
                       ) : (
                         <div className="flex items-center gap-2 text-success font-bold text-xs uppercase">
-                          <FaCheckCircle /> Approved
+                          <FaCheckCircle /> {asset.requestStatus}
                         </div>
                       )}
                     </td>
                     <td className="text-right space-x-2">
-                      {asset.status === "approved" && (
+                      {asset.requestStatus === "approved" && (
                         <button 
                           onClick={() => handlePrint(asset)}
                           className="btn btn-square btn-ghost btn-sm text-primary tooltip" 
@@ -148,7 +149,7 @@ const MyAssets = () => {
                         </button>
                       )}
                       
-                      {asset.status === "approved" && asset.assetType === "Returnable" && (
+                      {asset.requestStatus === "approved" && asset.assetType === "Returnable" && (
                         <button 
                           onClick={() => handleReturn(asset._id)}
                           disabled={asset.returned}
@@ -158,7 +159,7 @@ const MyAssets = () => {
                         </button>
                       )}
 
-                      {asset.status === "pending" && (
+                      {asset.requestStatus === "pending" && (
                         <button className="btn btn-sm btn-ghost btn-disabled opacity-50">Cancel</button>
                       )}
                     </td>
