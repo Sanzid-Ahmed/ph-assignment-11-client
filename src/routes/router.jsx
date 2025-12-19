@@ -18,6 +18,7 @@ import HrProfile from "../pages/hr/HrProfile.jsx";
 import AddAsset from "../pages/hr/addAsset.jsx";
 import EmployeeProfile from "../pages/employee/EmployeeProfile.jsx";
 import MyAssets from "../pages/employee/MyAssets.jsx";
+import MyTeam from "../pages/employee/MyTeam.jsx";
 
 
 export const router = createBrowserRouter([
@@ -73,6 +74,10 @@ export const router = createBrowserRouter([
       {
         path: "my-assets",
         element: <MyAssets />
+      },
+      {
+        path: "my-team",
+        element: <MyTeam />
       },
     ]
   }, 
