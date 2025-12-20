@@ -20,6 +20,8 @@ import EmployeeProfile from "../pages/employee/EmployeeProfile.jsx";
 import MyAssets from "../pages/employee/MyAssets.jsx";
 import MyTeam from "../pages/employee/MyTeam.jsx";
 import RequestAsset from "../pages/employee/RequestAsset.jsx";
+import PaymentSuccess from "../pages/hr/payment/PaymentSuccess.jsx";
+import PaymentCancelled from "../pages/hr/payment/PaymentCancelled.jsx";
 
 
 export const router = createBrowserRouter([
@@ -83,6 +85,19 @@ export const router = createBrowserRouter([
       {
         path: "request-asset",
         element: <RequestAsset />
+      },
+      //payment
+      {
+        path: "upgrade",
+        element: <UpgradePackage />,
+      },
+      {
+        path: "payment-success",
+        element: <PaymentSuccess />,
+      },
+      {
+        path: "payment-cancelled",
+        element: <PaymentCancelled />,
       },
     ]
   }, 

@@ -38,6 +38,8 @@ const RegisterEmployee = () => {
                 email: data.email,
                 dateOfBirth: data.dateOfBirth,
                 profileImage: photoURL,
+                packageLimit: 5,
+                subscription: "basic"
               }
               axiosSecure.post('/register-employee', userInfo).then(res =>{
                 if(res.data.insertedId){

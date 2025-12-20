@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
 import { toast } from "react-hot-toast";
-import { FiTrash2, FiUser } from "react-icons/fi";
+import { FiTrash2, FiTrendingUp, FiUser } from "react-icons/fi";
+import { useQuery } from "@tanstack/react-query";
+import useUserData from "../../hooks/useUserData";
+import { Link } from "react-router-dom";
 
 const MyEmployeeList = () => {
   const { user } = useAuth();
@@ -11,6 +14,8 @@ const MyEmployeeList = () => {
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const { userData } = useUserData();
+
 
   // Fetch employees from backend
   useEffect(() => {
@@ -51,6 +56,18 @@ const MyEmployeeList = () => {
       (emp.employeeName ?? "").toLowerCase().includes(searchQuery.toLowerCase()) ||
       (emp.employeeEmail ?? "").toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const { data: allemployees = [] } = useQuery({
+    queryKey: ["employees", user?.email],
+    enabled: !!user?.email,
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/employees/${user.email}`);
+      return res.data || [];
+    },
+  });
+
+  const employeeCount = allemployees.length;
+  const hasAccess = employeeCount < (userData?.packageLimit || 0);
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
@@ -119,6 +136,29 @@ const MyEmployeeList = () => {
           </tbody>
         </table>
       </div>
+      {!hasAccess && <div className="mt-10 w-full flex items-center justify-center p-4">
+          <div className="card w-full max-w-md bg-base-100 shadow-2xl border-t-4 border-primary">
+            <div className="card-body items-center text-center">
+              <div className="bg-primary/10 p-4 rounded-full mb-4">
+                <FiTrendingUp className="size-12 text-primary" />
+              </div>
+              <h2 className="card-title text-2xl font-bold">Package Limit Reached!</h2>
+              <p className="text-gray-500">
+                You have reached your employee limit of <span className="font-bold text-black">{userData.packageLimit}</span>. 
+                Upgrade your subscription to accept more requests and grow your team.
+              </p>
+              <div className="card-actions mt-6 w-full">
+                <Link to="/dashboard/upgrade" className="btn btn-primary w-full shadow-lg">
+                  <FiTrendingUp className="mr-2" /> Upgrade Package Now
+                </Link>
+                <Link to="/dashboard/home" className="btn btn-ghost w-full btn-sm mt-2">
+                  Back to Overview
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
     </div>
   );
 };

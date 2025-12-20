@@ -47,6 +47,7 @@ const Navbar = () => {
     </>
   );
 
+  console.log(role)
   const navLinks = !user ? publicLinks : (role === "hr" ? hrLinks : employeeLinks);
 
   return (
