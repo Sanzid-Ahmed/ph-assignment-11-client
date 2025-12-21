@@ -22,6 +22,7 @@ import MyTeam from "../pages/employee/MyTeam.jsx";
 import RequestAsset from "../pages/employee/RequestAsset.jsx";
 import PaymentSuccess from "../pages/hr/payment/PaymentSuccess.jsx";
 import PaymentCancelled from "../pages/hr/payment/PaymentCancelled.jsx";
+import AssignAsset from "../pages/hr/payment/AssignEmployee.jsx";
 
 
 export const router = createBrowserRouter([
@@ -68,6 +69,10 @@ export const router = createBrowserRouter([
       {
         path: "hr-profile",
         element: <HrProfile />
+      },
+      {
+        path: "assign-asset/:id", 
+        element: <AssignAsset />
       },
       //employee
       {

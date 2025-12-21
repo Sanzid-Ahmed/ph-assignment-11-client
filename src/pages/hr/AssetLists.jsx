@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { FaEdit, FaTrashAlt, FaSearch, FaFilter, FaSortAmountDown } from "react-icons/fa";
+// 1. Added FaUserPlus icon
+import { FaEdit, FaTrashAlt, FaSearch, FaFilter, FaSortAmountDown, FaUserPlus } from "react-icons/fa";
+import { Link } from "react-router-dom"; // 2. Import Link for navigation
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
 import { toast } from "react-hot-toast";
@@ -33,6 +35,7 @@ const AssetList = () => {
   const fetchAssets = async () => {
     setLoading(true);
     try {
+      // Note: You might want to pass search, filter, and sort as query params to your backend here
       const res = await axiosSecure.get(`/assets/hr/${user?.email}`);
       setAssets(res.data);
     } catch (error) {
@@ -83,7 +86,7 @@ const AssetList = () => {
     try {
       await axiosSecure.put(`/assets/${editingAsset._id}`, {
         ...editForm,
-        availableQuantity: editForm.productQuantity, // update available as needed
+        availableQuantity: editForm.productQuantity, 
       });
       toast.success("Asset updated successfully");
       setEditingAsset(null);
@@ -98,7 +101,6 @@ const AssetList = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <h2 className="text-3xl font-bold text-neutral">Company Asset Inventory</h2>
         
-        {/* Search & Filter */}
         <div className="flex flex-wrap items-center gap-3">
           <div className="relative">
             <input
@@ -122,7 +124,6 @@ const AssetList = () => {
         </div>
       </div>
 
-      {/* Assets Table */}
       <div className="overflow-x-auto rounded-lg border border-base-200 shadow-sm">
         <table className="table table-zebra w-full">
           <thead className="bg-base-200">
@@ -161,16 +162,27 @@ const AssetList = () => {
                     </div>
                   </td>
                   <td>{new Date(asset.dateAdded).toLocaleDateString()}</td>
-                  <td className="flex justify-center gap-2">
+                  <td className="flex justify-center gap-1">
+                    {/* 3. NEW ASSIGN BUTTON */}
+                    <Link
+                      to={`/dashboard/assign-asset/${asset._id}`}
+                      className="btn btn-ghost btn-sm text-success"
+                      title="Assign to Employee"
+                    >
+                      <FaUserPlus size={18} />
+                    </Link>
+
                     <button
                       onClick={() => openEditModal(asset)}
                       className="btn btn-ghost btn-sm text-info"
+                      title="Edit Asset"
                     >
                       <FaEdit size={18} className="text-secondary"/>
                     </button>
                     <button
                       onClick={() => handleDelete(asset._id)}
                       className="btn btn-ghost btn-sm text-error"
+                      title="Delete Asset"
                     >
                       <FaTrashAlt size={18} />
                     </button>
@@ -188,7 +200,7 @@ const AssetList = () => {
         </table>
       </div>
 
-      {/* Update Modal */}
+      {/* Update Modal (Remains the same) */}
       {editingAsset && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-md">
