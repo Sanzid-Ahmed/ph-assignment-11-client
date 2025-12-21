@@ -32,7 +32,7 @@ const HeroSection = ({ itemVariants }) => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
             {userData.role ? (
               /* If User exists, show Dashboard/Profile button */
-              <Link to="/dashboard/asset-lists" className="btn btn-primary btn-lg shadow-lg">
+              <Link to="/dashboard/hr-alytics" className="btn btn-primary btn-lg shadow-lg">
                 Go to Dashboard <FaColumns className="ml-2" />
               </Link>
             ) : (

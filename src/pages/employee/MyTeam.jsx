@@ -13,7 +13,6 @@ const MyTeam = () => {
 
   const handleUserData = (userData) => {
   setUserDetailsArray((prev) => {
-    // Avoid duplicates
     if (!prev.find((u) => u.employeeEmail === userData.employeeEmail)) {
       return [...prev, userData];
     }
@@ -48,27 +47,25 @@ const MyTeam = () => {
     enabled: !!selectedHrEmail,
   });
 
-  // --- Logic for Next Upcoming Birthday ---
 const upcomingBirthdayMember = React.useMemo(() => {
   if (!userDetailsArray || userDetailsArray.length === 0) return null;
 
   const today = new Date();
-  today.setHours(0, 0, 0, 0); // reset time for comparison
+  today.setHours(0, 0, 0, 0); 
 
   return userDetailsArray
-    .filter(user => user.dateOfBirth) // only users with birthdays
+    .filter(user => user.dateOfBirth) 
     .map(user => {
       const dob = new Date(user.dateOfBirth);
       let nextBDay = new Date(today.getFullYear(), dob.getMonth(), dob.getDate());
 
-      // If birthday already passed this year, consider next year
       if (nextBDay < today) {
         nextBDay.setFullYear(today.getFullYear() + 1);
       }
 
       return { ...user, nextBDayDate: nextBDay };
     })
-    .sort((a, b) => a.nextBDayDate - b.nextBDayDate)[0]; // earliest upcoming
+    .sort((a, b) => a.nextBDayDate - b.nextBDayDate)[0]; 
 }, [userDetailsArray]);
 
   if (affiliations.length === 0) {
@@ -89,14 +86,14 @@ const upcomingBirthdayMember = React.useMemo(() => {
 
   return (
     <div className="space-y-8 p-4 max-w-7xl mx-auto">
-      {/* Company Selection Dropdown */}
       <div className="flex justify-between items-center bg-base-100 p-4 rounded-2xl shadow-sm border border-base-200">
         <div className="hidden md:block">
           <h1 className="text-xl font-bold">My Team</h1>
           <p className="text-xs text-gray-500">Browse colleagues across your affiliated companies</p>
         </div>
         <div className="dropdown dropdown-end">
-          <div tabIndex={0} role="button" className="btn btn-outline btn-primary rounded-xl gap-2">
+          <p className="text-3xl font-bold mb-5">Select Company</p>
+          <div tabIndex={0} role="button" className="btn btn-outline btn-primary rounded-xl gap-2 w-full">
             <FaBuilding /> {activeCompany?.companyName || "Select Company"} <FaChevronDown className="text-xs" />
           </div>
           <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow-2xl bg-base-100 rounded-box w-64 mt-2 border border-base-200">
@@ -114,7 +111,6 @@ const upcomingBirthdayMember = React.useMemo(() => {
         </div>
       </div>
 
-      {/* Stats Banner */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-2 flex items-center gap-6 bg-gradient-to-r from-primary to-blue-600 rounded-[2rem] p-8 text-white shadow-lg">
           <div className="p-4 bg-white/20 rounded-2xl backdrop-blur-md hidden sm:block">
@@ -131,7 +127,6 @@ const upcomingBirthdayMember = React.useMemo(() => {
         </div>
       </div>
 
-      {/* Next Upcoming Birthday Section */}
 {upcomingBirthdayMember && (
   <div className="bg-secondary/5 border-2 border-dashed border-secondary/20 rounded-[2rem] p-6">
     <h3 className="text-lg font-bold text-secondary mb-4 flex items-center gap-2">
@@ -165,7 +160,6 @@ const upcomingBirthdayMember = React.useMemo(() => {
 )}
 
 
-      {/* Colleagues Grid */}
       <div>
         <div className="flex items-center justify-between mb-6">
             <h3 className="text-xl font-bold flex items-center gap-2">

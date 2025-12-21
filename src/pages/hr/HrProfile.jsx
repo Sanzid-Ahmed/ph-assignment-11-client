@@ -24,7 +24,6 @@ const HrProfile = () => {
   const { userData } = useUserData();
   const { register, handleSubmit, reset, watch } = useForm();
 
-  // Watch for image selection to show a "ready to upload" state
   const selectedImage = watch("image");
 
   useEffect(() => {
@@ -85,7 +84,6 @@ const HrProfile = () => {
   return (
     <div className="p-4 md:p-8 bg-base-200 min-h-screen">
       <div className="max-w-5xl mx-auto">
-        {/* Header Header */}
         <div className="mb-8">
           <h2 className="text-4xl font-extrabold text-neutral tracking-tight">Account Settings</h2>
           <p className="text-gray-500">Manage your HR profile and company credentials</p>
@@ -93,11 +91,9 @@ const HrProfile = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           
-          {/* ================= LEFT SECTION (Identity Card) ================= */}
           <div className="lg:col-span-4 space-y-6">
             <div className="card bg-base-100 shadow-xl border-t-4 border-primary overflow-hidden">
               <div className="card-body p-0">
-                {/* Banner Profile */}
                 <div className="h-24 bg-primary/10 w-full flex items-end justify-center">
                   <div className="avatar -mb-12">
                     <div className="w-28 rounded-full ring ring-white ring-offset-base-100 ring-offset-2 shadow-2xl bg-base-100">
@@ -137,7 +133,6 @@ const HrProfile = () => {
               </div>
             </div>
 
-            {/* Employee Usage Stat */}
             <div className="card bg-neutral text-neutral-content shadow-xl">
               <div className="card-body p-6">
                 <div className="flex justify-between items-center mb-2">
@@ -157,7 +152,6 @@ const HrProfile = () => {
             </div>
           </div>
 
-          {/* ================= RIGHT SECTION (Form) ================= */}
           <div className="lg:col-span-8">
             <div className="card bg-base-100 shadow-xl border border-base-300">
               <div className="card-body p-6 md:p-10">
@@ -168,7 +162,6 @@ const HrProfile = () => {
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Name Input */}
                     <div className="form-control w-full">
                       <label className="label">
                         <span className="label-text font-bold">Full Name</span>
@@ -183,7 +176,6 @@ const HrProfile = () => {
                       </div>
                     </div>
 
-                    {/* Company Input */}
                     <div className="form-control w-full">
                       <label className="label">
                         <span className="label-text font-bold">Company Name</span>
@@ -199,7 +191,6 @@ const HrProfile = () => {
                     </div>
                   </div>
 
-                  {/* Readonly Email */}
                   <div className="form-control w-full">
                     <label className="label">
                       <span className="label-text font-bold opacity-50">Email Address (Non-editable)</span>
@@ -211,7 +202,6 @@ const HrProfile = () => {
                     />
                   </div>
 
-                  {/* File Upload */}
                   <div className="form-control w-full">
                     <label className="label">
                       <span className="label-text font-bold">Update Profile Picture</span>

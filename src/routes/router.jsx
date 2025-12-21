@@ -24,19 +24,24 @@ import PaymentSuccess from "../pages/hr/payment/PaymentSuccess.jsx";
 import PaymentCancelled from "../pages/hr/payment/PaymentCancelled.jsx";
 import AssignAsset from "../pages/hr/payment/AssignEmployee.jsx";
 import PrivateRoute from "./PrivateRoute.jsx";
+import HRAnalytics from "../pages/hr/HRAnalytics.jsx";
+import HRRout from "./HRRout.jsx";
+import ErrorPage from "../components/ErrorPage.jsx";
 
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
+    errorElement: <ErrorPage />,
     children: [
       { index: true, element: <HomePage /> },
     ],
   },
   {
     path: "/",
-    element: <AuthLayout />, // Auth pages layout
+    element: <AuthLayout />,
+    errorElement: <ErrorPage />,
     children: [
       { path: "/login", element: <Login /> },
       { path: "/register-hr", element: <RegisterHR /> },
@@ -46,34 +51,39 @@ export const router = createBrowserRouter([
   {
     path: "/dashboard",
     element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
+    errorElement: <ErrorPage />,
     children: [
       {
+        path: "hr-alytics",
+        element: <HRRout><HRAnalytics /></HRRout> 
+      },
+      {
         path: "asset-lists",
-        element: <AssetLists />
+        element: <HRRout><AssetLists /></HRRout>
       },
       {
         path: "add-asset",
-        element: <AddAsset />
+        element: <HRRout><AddAsset /></HRRout>
       },
       {
         path: "all-requests",
-        element: <AllRequests /> 
+        element: <HRRout><AllRequests /></HRRout>
       },
       {
         path: "employees",
-        element: <MyEmployeeList />
+        element: <HRRout><MyEmployeeList /></HRRout>
       },
       {
         path: "upgrade",
-        element: <UpgradePackage />
+        element: <HRRout><UpgradePackage /></HRRout>
       },
       {
         path: "hr-profile",
-        element: <HrProfile />
+        element: <HRRout><HrProfile /></HRRout>
       },
       {
         path: "assign-asset/:id", 
-        element: <AssignAsset />
+        element: <HRRout><AssignAsset /></HRRout>
       },
       //employee
       {
@@ -95,16 +105,20 @@ export const router = createBrowserRouter([
       //payment
       {
         path: "upgrade",
-        element: <UpgradePackage />,
+        element: <HRRout><UpgradePackage /></HRRout>,
       },
       {
         path: "payment-success",
-        element: <PaymentSuccess />,
+        element: <HRRout><PaymentSuccess /></HRRout>,
       },
       {
         path: "payment-cancelled",
-        element: <PaymentCancelled />,
+        element: <HRRout><PaymentCancelled /></HRRout>,
       },
     ]
-  }, 
+  },
+  {
+    path: "*",
+    element: <ErrorPage />
+  } 
 ]);

@@ -37,6 +37,10 @@ const Navbar = () => {
     <>
       {homeLink}
       <li>
+        <NavLink to="/dashboard/hr-alytics">Analytics</NavLink>
+      </li>
+
+      <li>
         <NavLink to="/dashboard/asset-lists">Asset List</NavLink>
       </li>
       <li>
@@ -49,9 +53,7 @@ const Navbar = () => {
         <NavLink to="/dashboard/employees">My Team</NavLink>
       </li>
       <li>
-        <NavLink to="/dashboard/upgrade">
-           Upgrade Package
-        </NavLink>
+        <NavLink to="/dashboard/upgrade">Upgrade Package</NavLink>
       </li>
 
       <li>

@@ -13,6 +13,7 @@ import {
   FiHome,
   FiLogOut,
   FiMenu,
+  FiPieChart,
 } from "react-icons/fi";
 
 const DashboardLayout = () => {
@@ -80,6 +81,7 @@ const DashboardLayout = () => {
 
               {role === "hr" ? (
                 <>
+                  <li><NavLink to="/dashboard/hr-alytics"><FiPieChart className="size-5" /> Analytics</NavLink></li>
                   <li><NavLink to="/dashboard/asset-lists"><FiPackage className="size-5" /> Asset List</NavLink></li>
                   <li><NavLink to="/dashboard/add-asset"><FiPlusSquare className="size-5" /> Add Asset</NavLink></li>
                   <li><NavLink to="/dashboard/all-requests"><FiRepeat className="size-5" /> All Requests</NavLink></li>
