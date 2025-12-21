@@ -85,7 +85,7 @@ const PackagesSection = ({ packages, loading, itemVariants }) => {
                     </ul>
 
                     <Link
-                      to="/join-hr"
+                      to="/dashboard/upgrade"
                       className={`btn btn-lg w-full border-none rounded-2xl transition-all duration-300 ${
                         isStandard 
                         ? "bg-white text-primary hover:bg-base-200" 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import useRole from "../../hooks/useRole";
 import { FiLogOut, FiMenu, FiUser } from "react-icons/fi";
@@ -9,18 +9,26 @@ const Navbar = () => {
   const { role } = useRole();
 
   const handleLogOut = () => {
-    logOut().catch(error => console.log(error));
-  }
+    logOut().catch((error) => console.log(error));
+  };
 
   // Common link for everyone
-  const homeLink = <li><NavLink to='/'>Home</NavLink></li>;
+  const homeLink = (
+    <li>
+      <NavLink to="/">Home</NavLink>
+    </li>
+  );
 
   // Links for Unauthenticated Users
   const publicLinks = (
     <>
       {homeLink}
-      <li><NavLink to='/register-employee'>Join as Employee</NavLink></li>
-      <li><NavLink to='/register-hr'>Join as HR</NavLink></li>
+      <li>
+        <NavLink to="/register-employee">Join as Employee</NavLink>
+      </li>
+      <li>
+        <NavLink to="/register-hr">Join as HR</NavLink>
+      </li>
     </>
   );
 
@@ -28,11 +36,27 @@ const Navbar = () => {
   const hrLinks = (
     <>
       {homeLink}
-      <li><NavLink to="/dashboard/asset-lists">Asset List</NavLink></li>
-      <li><NavLink to="/dashboard/add-asset">Add Asset</NavLink></li>
-      <li><NavLink to="/dashboard/all-requests">All Requests</NavLink></li>
-      <li><NavLink to="/dashboard/employees">My Team</NavLink></li>
-      <li><NavLink to="/dashboard/hr-profile">Profile</NavLink></li>
+      <li>
+        <NavLink to="/dashboard/asset-lists">Asset List</NavLink>
+      </li>
+      <li>
+        <NavLink to="/dashboard/add-asset">Add Asset</NavLink>
+      </li>
+      <li>
+        <NavLink to="/dashboard/all-requests">All Requests</NavLink>
+      </li>
+      <li>
+        <NavLink to="/dashboard/employees">My Team</NavLink>
+      </li>
+      <li>
+        <NavLink to="/dashboard/upgrade">
+           Upgrade Package
+        </NavLink>
+      </li>
+
+      <li>
+        <NavLink to="/dashboard/hr-profile">Profile</NavLink>
+      </li>
     </>
   );
 
@@ -40,15 +64,27 @@ const Navbar = () => {
   const employeeLinks = (
     <>
       {homeLink}
-      <li><NavLink to="/dashboard/my-assets">My Assets</NavLink></li>
-      <li><NavLink to="/dashboard/my-team">My Team</NavLink></li>
-      <li><NavLink to="/dashboard/request-asset">Request Asset</NavLink></li>
-      <li><NavLink to="/dashboard/employee-profile">Profile</NavLink></li>
+      <li>
+        <NavLink to="/dashboard/my-assets">My Assets</NavLink>
+      </li>
+      <li>
+        <NavLink to="/dashboard/my-team">My Team</NavLink>
+      </li>
+      <li>
+        <NavLink to="/dashboard/request-asset">Request Asset</NavLink>
+      </li>
+      <li>
+        <NavLink to="/dashboard/employee-profile">Profile</NavLink>
+      </li>
     </>
   );
 
-  console.log(role)
-  const navLinks = !user ? publicLinks : (role === "hr" ? hrLinks : employeeLinks);
+  console.log(role);
+  const navLinks = !user
+    ? publicLinks
+    : role === "hr"
+    ? hrLinks
+    : employeeLinks;
 
   return (
     <div className="sticky top-0 z-50 bg-base-100/80 backdrop-blur-md border-b border-base-200 w-19/20 mx-auto">
@@ -84,20 +120,36 @@ const Navbar = () => {
         <div className="navbar-end gap-2">
           {user ? (
             <div className="dropdown dropdown-end">
-              <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar border border-base-300">
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn btn-ghost btn-circle avatar border border-base-300"
+              >
                 <div className="w-10 rounded-full">
-                  <img 
-                    alt="User Profile" 
-                    src={user?.photoURL || "https://i.ibb.co.com/mR7093X/user-placeholder.png"} 
+                  <img
+                    alt="User Profile"
+                    src={
+                      user?.photoURL ||
+                      "https://i.ibb.co.com/mR7093X/user-placeholder.png"
+                    }
                   />
                 </div>
               </div>
-              <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow-xl menu menu-sm dropdown-content bg-base-100 rounded-box w-52 border border-base-200">
+              <ul
+                tabIndex={0}
+                className="mt-3 z-[1] p-2 shadow-xl menu menu-sm dropdown-content bg-base-100 rounded-box w-52 border border-base-200"
+              >
                 <li className="px-4 py-2 font-bold text-primary truncate border-b border-base-100 mb-2">
                   {user?.displayName || "User"}
                 </li>
                 <li>
-                  <Link to={role === 'hr' ? "/dashboard/hr-profile" : "/dashboard/employee-profile"}>
+                  <Link
+                    to={
+                      role === "hr"
+                        ? "/dashboard/hr-profile"
+                        : "/dashboard/employee-profile"
+                    }
+                  >
                     <FiUser /> Profile
                   </Link>
                 </li>

@@ -1,11 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { FaUser, FaUserTie } from "react-icons/fa";
+import { Link, NavLink } from "react-router-dom"; // Added NavLink here
+import { FaUser, FaUserTie, FaColumns } from "react-icons/fa"; // Added FaColumns for Dashboard icon
 import { motion } from "framer-motion";
-console.log(motion);
-
+console.log(motion)
+import useUserData from "../../hooks/useUserData";
 
 const HeroSection = ({ itemVariants }) => {
+  const { userData } = useUserData();
+
   return (
     <motion.section
       className="hero min-h-[60vh] bg-base-200 rounded-xl mb-5 shadow-xl"
@@ -28,15 +30,25 @@ const HeroSection = ({ itemVariants }) => {
             physical assets and employee accountability—without paperwork.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-            <Link to="/register-hr" className="btn btn-primary btn-lg shadow-lg">
-              Join as HR Manager <FaUserTie className="ml-2" />
-            </Link>
-            <Link
-              to="/register-employee"
-              className="btn btn-outline btn-primary btn-lg shadow-lg"
-            >
-              Join as Employee <FaUser className="ml-2" />
-            </Link>
+            {userData.role ? (
+              /* If User exists, show Dashboard/Profile button */
+              <Link to="/dashboard/asset-lists" className="btn btn-primary btn-lg shadow-lg">
+                Go to Dashboard <FaColumns className="ml-2" />
+              </Link>
+            ) : (
+              /* Use React Fragment (<>...</>) to return multiple elements in ternary */
+              <>
+                <Link to="/register-hr" className="btn btn-primary btn-lg shadow-lg">
+                  Join as HR Manager <FaUserTie className="ml-2" />
+                </Link>
+                <Link
+                  to="/register-employee"
+                  className="btn btn-outline btn-primary btn-lg shadow-lg"
+                >
+                  Join as Employee <FaUser className="ml-2" />
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>
