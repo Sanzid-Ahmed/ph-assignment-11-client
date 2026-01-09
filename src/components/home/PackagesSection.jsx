@@ -16,7 +16,7 @@ const PackagesSection = ({ packages, loading, itemVariants }) => {
         <div className="text-center max-w-2xl mx-auto mb-16">
           <motion.div variants={itemVariants}>
             <span className="badge badge-outline badge-primary font-bold mb-4 px-4 py-3">Pricing Plans</span>
-            <h2 className="text-4xl md:text-5xl font-black text-neutral mb-6 leading-tight">
+            <h2 className="text-4xl md:text-5xl font-black mb-6 leading-tight">
               Scale Your Team Without <br />
               <span className="text-primary">Breaking the Bank</span>
             </h2>
@@ -45,7 +45,7 @@ const PackagesSection = ({ packages, loading, itemVariants }) => {
                   whileHover={{ y: -10 }}
                   className={`relative card h-full p-1 transition-all duration-300 ${
                     isStandard 
-                    ? "bg-gradient-to-b from-primary to-blue-700 text-white shadow-2xl scale-105 z-10 rounded-3xl" 
+                    ? "bg-gradient-to-b from-primary to-neutral text-white shadow-2xl scale-105 z-10 rounded-3xl" 
                     : "bg-base-100 border border-base-200 shadow-xl rounded-3xl"
                   }`}
                 >
@@ -59,16 +59,16 @@ const PackagesSection = ({ packages, loading, itemVariants }) => {
 
                   <div className="card-body p-8 flex flex-col">
                     <div className="mb-6">
-                      <h3 className={`text-2xl font-black uppercase tracking-wider mb-2 ${isStandard ? "text-white" : "text-neutral"}`}>
+                      <h3 className={`text-2xl font-black uppercase tracking-wider mb-2 ${isStandard ? "text-white" : "text-primary"}`}>
                         {pkg.name}
                       </h3>
                       <div className="flex items-baseline gap-1">
                         <span className="text-5xl font-extrabold">${pkg.price}</span>
-                        <span className={`text-sm font-medium ${isStandard ? "text-white/80" : "text-gray-400"}`}>
+                        <span className={`text-sm font-medium`}>
                           /setup
                         </span>
                       </div>
-                      <p className={`mt-4 text-sm font-semibold p-2 rounded-lg text-center ${isStandard ? "bg-white/20" : "bg-base-200 text-primary"}`}>
+                      <p className={`mt-4 text-sm font-semibold p-2 rounded-lg text-center ${isStandard ? "bg-white/20" : "bg-neutral/80"}`}>
                         Up to {pkg.employeeLimit} Employees
                       </p>
                     </div>
@@ -79,7 +79,7 @@ const PackagesSection = ({ packages, loading, itemVariants }) => {
                       {pkg.features.map((feature, fIndex) => (
                         <li key={fIndex} className="flex items-start gap-3 text-sm">
                           <FaCheckCircle className={`mt-1 flex-shrink-0 ${isStandard ? "text-white" : "text-primary"}`} />
-                          <span className={isStandard ? "text-white/90" : "text-gray-600"}>{feature}</span>
+                          <span >{feature}</span>
                         </li>
                       ))}
                     </ul>

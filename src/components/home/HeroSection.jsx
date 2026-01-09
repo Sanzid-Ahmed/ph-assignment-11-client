@@ -1,58 +1,85 @@
-import React from "react";
-import { Link, NavLink } from "react-router-dom"; // Added NavLink here
-import { FaUser, FaUserTie, FaColumns } from "react-icons/fa"; // Added FaColumns for Dashboard icon
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 console.log(motion)
-import useUserData from "../../hooks/useUserData";
+import heroImg from "../../assets/nik-7I4u37HwA08-unsplash.jpg";
 
-const HeroSection = ({ itemVariants }) => {
-  const { userData } = useUserData();
-
+const HeroSection = () => {
   return (
-    <motion.section
-      className="hero min-h-[60vh] bg-base-200 rounded-xl mb-5 shadow-xl"
-      variants={itemVariants}
-    >
-      <div className="hero-content flex-col lg:flex-row-reverse p-5 gap-10">
-        <div className="lg:w-1/2 rounded-xl overflow-hidden shadow-lg">
-          <img
-            src="https://images.unsplash.com/photo-1551836022-4c4c79ecde51"
-            alt="Corporate teamwork"
-            className="rounded-xl w-full h-full object-cover"
-          />
-        </div>
-        <div className="lg:w-1/2 text-center lg:text-left">
-          <h1 className="text-5xl md:text-6xl font-extrabold text-primary mb-4 leading-tight">
-            AssetVerse: <span className="text-secondary">Track. Manage. Grow.</span>
-          </h1>
-          <p className="py-6 text-lg text-gray-700">
-            A complete digital platform to efficiently manage your company’s
-            physical assets and employee accountability—without paperwork.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-            {userData.role ? (
-              /* If User exists, show Dashboard/Profile button */
-              <Link to="/dashboard/hr-alytics" className="btn btn-primary btn-lg shadow-lg">
-                Go to Dashboard <FaColumns className="ml-2" />
-              </Link>
-            ) : (
-              /* Use React Fragment (<>...</>) to return multiple elements in ternary */
-              <>
-                <Link to="/register-hr" className="btn btn-primary btn-lg shadow-lg">
-                  Join as HR Manager <FaUserTie className="ml-2" />
-                </Link>
-                <Link
-                  to="/register-employee"
-                  className="btn btn-outline btn-primary btn-lg shadow-lg"
-                >
-                  Join as Employee <FaUser className="ml-2" />
-                </Link>
-              </>
-            )}
-          </div>
-        </div>
+    <div>
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Background Image */}
+      <img
+        src={heroImg}
+        alt="Hero Background"
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/90"></div>
+
+      {/* Content */}
+<div className="relative z-10 w-10/12 mx-auto max-w-6xl text-center text-white px-4">
+        {/* Heading */}
+        <motion.h1
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-3xl sm:text-5xl lg:text-6xl font-extrabold leading-tight"
+        >
+          Manage Assets & Employees
+          <span className="block text-primary mt-2">
+            Smarter with Freemarket
+          </span>
+        </motion.h1>
+
+        {/* Subtitle */}
+        <motion.p
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.8 }}
+          className="mt-6 text-sm sm:text-lg lg:text-xl text-gray-200"
+        >
+          An all-in-one platform to track assets, manage employees,
+          assign responsibilities, and scale your business efficiently.
+        </motion.p>
+
+        {/* Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.8 }}
+          className="mt-10 flex flex-col sm:flex-row gap-4 justify-center"
+        >
+          <Link
+            to="/about-us"
+            className="px-8 py-3 rounded-lg bg-primary text-white font-semibold hover:bg-primary/90 transition"
+          >
+            Explore Features
+          </Link>
+
+          <Link
+            to="/signup"
+            className="px-8 py-3 rounded-lg border border-white/40 text-white font-semibold hover:bg-white/10 transition"
+          >
+            Get Started
+          </Link>
+        </motion.div>
+
+        {/* Trust Indicators */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6 }}
+          className="mt-12 flex justify-center gap-6 text-sm text-gray-300"
+        >
+          <span>✔ Secure</span>
+          <span>✔ Scalable</span>
+          <span>✔ Team-friendly</span>
+        </motion.div>
       </div>
-    </motion.section>
+
+    </section>
+    </div>
   );
 };
 

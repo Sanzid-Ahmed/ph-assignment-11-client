@@ -5,6 +5,7 @@ import HeroSection from "../../components/home/HeroSection";
 import FeaturesSection from "../../components/home/FeaturesSection";
 import PackagesSection from "../../components/home/PackagesSection";
 import TestimonialsWorkflowSection from "../../components/home/TestimonialsWorkflowSection";
+import AssetLifecycle from "../../components/home/AssetLifecycle";
 
 const mockPackages = [
   {
@@ -60,20 +61,27 @@ const HomePage = () => {
       animate="visible"
     >
       {" "}
-      <div className="container mx-auto px-4 py-8">
-        <HeroSection itemVariants={itemVariants} />
-        <FeaturesSection itemVariants={itemVariants} />
-        <hr className="my-16 border-t-2 border-gray-200" />
-        {" "}
-        <PackagesSection
+      <div className="py-8">
+        <div className="my-5">
+          <HeroSection itemVariants={itemVariants} />
+        </div>
+        <div className="my-20">
+          <FeaturesSection itemVariants={itemVariants} />
+        </div>
+        <div className="my-20">
+          <PackagesSection
           packages={packages}
           loading={loading}
           itemVariants={itemVariants}
         />
-        <hr className="my-16 border-t-2 border-gray-200" />
-        <TestimonialsWorkflowSection itemVariants={itemVariants} />{" "}
+        </div>
+        <div className="my-20">
+          <TestimonialsWorkflowSection itemVariants={itemVariants} />
+        </div>
+        <div className="my-20">
+          <AssetLifecycle />
+        </div>
       </div>
-      {" "}
     </motion.div>
   );
 };

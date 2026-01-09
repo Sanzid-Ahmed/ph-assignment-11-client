@@ -1,12 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import useRole from "../../hooks/useRole";
 import { FiLogOut, FiMenu, FiUser } from "react-icons/fi";
+import Logo from "./Logo";
+import Login from "../../pages/public/Login";
+import { FaBuilding, FaHome } from "react-icons/fa";
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
   const { role } = useRole();
+
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+  const toggleTheme = (e) => {
+    if (e.target.checked) {
+      setTheme("dark");
+    } else {
+      setTheme("light");
+    }
+  };
 
   const handleLogOut = () => {
     logOut().catch((error) => console.log(error));
@@ -14,9 +30,14 @@ const Navbar = () => {
 
   // Common link for everyone
   const homeLink = (
-    <li>
-      <NavLink to="/">Home</NavLink>
-    </li>
+    <>
+      <li>
+        <NavLink to="/"><FaHome />Home</NavLink>
+      </li>
+      <li>
+        <NavLink to="/about-us"><FaBuilding />About Us</NavLink>
+      </li>
+    </>
   );
 
   // Links for Unauthenticated Users
@@ -81,7 +102,6 @@ const Navbar = () => {
     </>
   );
 
-  console.log(role);
   const navLinks = !user
     ? publicLinks
     : role === "hr"
@@ -89,12 +109,12 @@ const Navbar = () => {
     : employeeLinks;
 
   return (
-    <div className="sticky top-0 z-50 bg-base-100/80 backdrop-blur-md border-b border-base-200 w-19/20 mx-auto">
-      <div className="navbar container mx-auto">
+    <div className="sticky top-0 z-50 backdrop-blur-md border-b border-base-200 w-full h-[75px]">
+      <div className="navbar container w-9/12 lg:w-10/12 mx-auto">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-              <FiMenu className="h-5 w-5" />
+              <FiMenu className="h-7 w-7 text-primary" />
             </div>
             <ul
               tabIndex={0}
@@ -103,14 +123,7 @@ const Navbar = () => {
               {navLinks}
             </ul>
           </div>
-          <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-bold transition-transform group-hover:rotate-12">
-              A
-            </div>
-            <span className="text-xl font-black tracking-tighter hidden sm:block">
-              Asset<span className="text-primary">Verse</span>
-            </span>
-          </Link>
+          <Logo></Logo>
         </div>
 
         <div className="navbar-center hidden lg:flex">
@@ -163,9 +176,30 @@ const Navbar = () => {
               </ul>
             </div>
           ) : (
-            <Link to="/login" className="btn btn-primary btn-sm md:btn-md px-6">
-              Login
-            </Link>
+            <div className="flex justify-center items-center gap-2">
+              <input
+                type="checkbox"
+                className="toggle toggle-primary"
+                onChange={toggleTheme}
+                checked={theme === "dark"}
+              />
+
+              {/* Open the modal using document.getElementById('ID').showModal() method */}
+              {/* You can open the modal using document.getElementById('ID').showModal() method */}
+<button className="btn btn-primary btn-sm md:btn-md px-6" onClick={()=>document.getElementById('my_modal_4').showModal()}>Sign in</button>
+<dialog id="my_modal_4" className="modal">
+  <div className="modal-box w-11/12 max-w-5xl">
+    <Login></Login>
+    <div className="modal-action">
+      <form method="dialog">
+        {/* if there is a button, it will close the modal */}
+        <button className="btn">Close</button>
+      </form>
+    </div>
+  </div>
+</dialog>
+
+            </div>
           )}
         </div>
       </div>

@@ -2,27 +2,44 @@
 
 
 @import "tailwindcss";
-@plugin "daisyui"{
-    themes: light --default;
-};
+@plugin "daisyui" {
+  themes: light, dark;
+}
+
+
 @plugin "daisyui/theme" {
   name: "light";
   default: true;
-  --color-primary: #a966eb;
-  --color-secondary: #18033d;
+  --color-primary: #606c38;
+  --color-secondary: #283618;
+  --color-accent: #000000; /* Amber/Yellow for alerts, important actions */
+  --color-neutral: #dad7cd; /* Gray for text, borders */
+    /* --color-base-100: #000000; Card backgrounds */
+  --color-base-200: #c9be8d; /* Card backgrounds */
+  --color-base-300: #D1D5DB; /* Hover states, borders */
 }
 
+@plugin "daisyui/theme" {
+  name: "dark";
+  default: false;
+  --color-primary: #606c38;
+  --color-secondary: #283618;
+  --color-accent: #ffffff; /* Yellow/Amber for alerts, notifications */
+  --color-neutral: #415a77; /* Gray for text and secondary info */
+  --color-base-200: #fefae0; /* Card backgrounds */
+  --color-base-300: #374151; /* Hover, borders, secondary UI */
+}
 
 
 body{
   font-family: "Urbanist", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
-  background-color: #EAECED;
+  /* background-color: #eff6e0; */
 }
 
 .active{
-  background-color: #a966eb;
+  background-color: #606c38;
   color: white;
   font: bold;
 }

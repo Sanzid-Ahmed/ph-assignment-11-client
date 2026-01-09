@@ -27,6 +27,7 @@ import PrivateRoute from "./PrivateRoute.jsx";
 import HRAnalytics from "../pages/hr/HRAnalytics.jsx";
 import HRRout from "./HRRout.jsx";
 import ErrorPage from "../components/ErrorPage.jsx";
+import AboutUs from "../pages/public/AboutUs.jsx";
 
 
 export const router = createBrowserRouter([
@@ -36,6 +37,7 @@ export const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <HomePage /> },
+      { path: "/about-us", element: <AboutUs /> },
     ],
   },
   {
