@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+console.log(motion)
 import { FaUsers, FaLightbulb, FaShieldAlt, FaRocket } from "react-icons/fa";
 import heroImg from "../../assets/nik-7I4u37HwA08-unsplash.jpg"; // Reusing your hero image for consistency
 import HRSection from "../../components/aboutUs/HRSection";

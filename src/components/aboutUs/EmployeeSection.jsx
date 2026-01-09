@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+console.log(motion)
 import { 
   FaBuilding, 
   FaBirthdayCake, 
