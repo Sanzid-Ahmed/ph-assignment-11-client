@@ -28,6 +28,7 @@ import HRAnalytics from "../pages/hr/HRAnalytics.jsx";
 import HRRout from "./HRRout.jsx";
 import ErrorPage from "../components/ErrorPage.jsx";
 import AboutUs from "../pages/public/AboutUs.jsx";
+import Features from "../pages/public/Features.jsx";
 
 
 export const router = createBrowserRouter([
@@ -38,6 +39,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: "/about-us", element: <AboutUs /> },
+      { path: "/features", element: <Features /> },
     ],
   },
   {

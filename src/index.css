@@ -10,24 +10,27 @@
 @plugin "daisyui/theme" {
   name: "light";
   default: true;
-  --color-primary: #606c38;
-  --color-secondary: #283618;
-  --color-accent: #000000; /* Amber/Yellow for alerts, important actions */
-  --color-neutral: #dad7cd; /* Gray for text, borders */
-    /* --color-base-100: #000000; Card backgrounds */
-  --color-base-200: #c9be8d; /* Card backgrounds */
-  --color-base-300: #D1D5DB; /* Hover states, borders */
+
+  --color-primary: #506f2f;   /* Deep olive green for buttons and highlights */
+  --color-secondary: #3b5323; /* Dark moss green for secondary elements */
+  --color-accent: #f5c242;    /* Warm amber/yellow for alerts, CTAs */
+  --color-neutral: #f5f5f5;   /* Soft gray for borders and subtle backgrounds */
+  --color-base-100: #ffffff;  /* Main page background */
+  --color-base-200: #e6e6e6;  /* Card backgrounds and hover surfaces */
+  --color-base-300: #d1d5db;  /* Borders, subtle hover effects */
 }
 
 @plugin "daisyui/theme" {
   name: "dark";
   default: false;
-  --color-primary: #606c38;
-  --color-secondary: #283618;
-  --color-accent: #ffffff; /* Yellow/Amber for alerts, notifications */
-  --color-neutral: #415a77; /* Gray for text and secondary info */
-  --color-base-200: #fefae0; /* Card backgrounds */
-  --color-base-300: #374151; /* Hover, borders, secondary UI */
+
+  --color-primary: #a5c853;   /* Muted lime/green for primary actions */
+  --color-secondary: #6b8e23; /* Dark olive green for secondary elements */
+  --color-accent: #f59e0b;    /* Bright amber/yellow for alerts & important actions */
+  --color-neutral: #2d2d2d;   /* Dark gray for text, borders, background */
+  --color-base-100: #121212;  /* Main background color */
+  --color-base-200: #1e1e1e;  /* Cards, sections, hover backgrounds */
+  --color-base-300: #2a2a2a;  /* Borders, subtle hover states */
 }
 
 

@@ -4,122 +4,199 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
+import EmployeeHero from "../../components/employeeComponents/EmployeeHero";
+import Login from "./Login";
 
 const RegisterEmployee = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const { registerUser, updateUserProfile } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const axiosSecure = useAxiosSecure();
 
+  const handleRegistration = (data) => {
+    const profileImage = data.photo[0];
 
+    registerUser(data.email, data.password)
+      .then(() => {
+        const formData = new FormData();
+        formData.append("image", profileImage);
 
-    const { register, handleSubmit, formState: {errors} } = useForm();
-    const { registerUser, updateUserProfile } = useAuth();
-    const location = useLocation();
-    const navigate = useNavigate();
-    const axiosSecure = useAxiosSecure();
+        const Image_API_URL = `https://api.imgbb.com/1/upload?key=${
+          import.meta.env.VITE_image_host_key
+        }`;
+        axios.post(Image_API_URL, formData).then((res) => {
+          const photoURL = res.data.data.url;
 
+          const userInfo = {
+            name: data.name,
+            email: data.email,
+            dateOfBirth: data.dateOfBirth,
+            profileImage: photoURL,
+            packageLimit: 5,
+            subscription: "basic",
+          };
 
-    const handleRegistration = (data) =>{
-
-      const profileImage = data.photo[0];
-
-        registerUser(data.email, data.password).then(() => {
-
-            //1. store the image and get the photo url. 
-            const formData = new FormData();
-            formData.append('image', profileImage);
-
-            //2. send the photo to store and get the url. 
-            const Image_API_URL = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_host_key}`
-            axios.post(Image_API_URL, formData).then( res => {
-              const photoURL =  res.data.data.url;
-
-
-              //NEW create user in the data base:
-              const userInfo = {
-                name: data.name,
-                email: data.email,
-                dateOfBirth: data.dateOfBirth,
-                profileImage: photoURL,
-                packageLimit: 5,
-                subscription: "basic"
-              }
-              axiosSecure.post('/register-employee', userInfo).then(res =>{
-                if(res.data.insertedId){
-                  console.log('user created in the data base')
-                }
-              })
-
-              //3. update user profile
-              const userProfile = {
-              displayName: data.name,
-              photoURL: photoURL,
+          axiosSecure.post("/register-employee", userInfo).then((res) => {
+            if (res.data.insertedId) {
+              console.log("User created in the database");
             }
-            updateUserProfile(userProfile).then( ()=> {
-              console.log('user profile updated')
-              navigate(location.state || '/');
-            }).catch(error => console.log(error))
+          });
 
-              })
-        }).catch(error => {
-            console.log(error);
-        })
-
-    }
+          const userProfile = {
+            displayName: data.name,
+            photoURL,
+          };
+          updateUserProfile(userProfile)
+            .then(() => {
+              console.log("User profile updated");
+              navigate(location.state || "/");
+            })
+            .catch((err) => console.log(err));
+        });
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
-    <div className="card bg-base-100 w-full mx-auto shrink-0 shadow-2xl p-10">
-      <h3 className="text-3xl text-center">Welcome to AssetVerse</h3>
-        <p className="text-center">Please Register as Employee</p>
-      <form className="card-body" onSubmit={handleSubmit(handleRegistration)}>
-        <fieldset className="fieldset mx-auto">
+    <div className="lg:grid lg:grid-cols-2 min-h-screen bg-base-100">
+      {/* Left: Employee Hero */}
+      <div className="hidden lg:block">
+        <EmployeeHero />
+      </div>
 
-          {/* photo image field */}
-          <label className="label">Photo</label>
-          <input type="file" {...register('photo', {required: true})} className="file-input md:w-[400px]" placeholder="Your photo" />
-            {errors.name?.type ==='required' && <p className="text-red-500">Photo is required. </p>}
-          
-          
-          {/* Name field */}
-          <label className="label">Name</label>
-          <input type="text" {...register('name', {required: true})} className="input md:w-[400px]" placeholder="Your name" />
-            {errors.name?.type ==='required' && <p className="text-red-500">Name is required. </p>}
-          
+      {/* Right: Registration Form */}
+      <div className="flex items-center justify-center p-10 bg-base-100 shadow-2xl">
+        <div className="w-full max-w-md">
+          <h3 className="text-3xl font-bold text-primary text-center mb-2">
+            Welcome to AssetVerse
+          </h3>
+          <p className="text-center text-base-content/70 mb-8">
+            Register as Employee to manage your assets and stay connected
+          </p>
 
-            {/* Date of Birth field */}
-          <label className="label">Date of Birth</label>
-          <input
-            type="date"
-            {...register("dateOfBirth", { required: true })}
-            className="input md:w-[400px]"
-          />
-          {errors.dateOfBirth && (
-            <p className="text-red-500">Date of Birth is required.</p>
-          )}
+          <form
+            onSubmit={handleSubmit(handleRegistration)}
+            className="space-y-4"
+          >
+            {/* Photo */}
+            <div className="form-control w-full">
+              <label className="label">
+                <span className="label-text font-semibold">Photo</span>
+              </label>
+              <input
+                type="file"
+                {...register("photo", { required: true })}
+                className="file-input file-input-bordered w-full file-input-primary"
+              />
+              {errors.photo && (
+                <span className="text-red-500 text-sm">Photo is required</span>
+              )}
+            </div>
 
+            {/* Name */}
+            <div className="form-control w-full">
+              <label className="label">
+                <span className="label-text font-semibold">Full Name</span>
+              </label>
+              <input
+                type="text"
+                {...register("name", { required: true })}
+                placeholder="Your Name"
+                className="input input-bordered w-full input-primary"
+              />
+              {errors.name && (
+                <span className="text-red-500 text-sm">Name is required</span>
+              )}
+            </div>
 
-          
-          {/* Email field */}
-          <label className="label">Email</label>
-          <input type="email" {...register('email', {required: true})} className="input md:w-[400px]" placeholder="Email" />
-            {errors.email?.type ==='required' && <p className="text-red-500">Email is required. </p>}
+            {/* Date of Birth */}
+            <div className="form-control w-full">
+              <label className="label">
+                <span className="label-text font-semibold">Date of Birth</span>
+              </label>
+              <input
+                type="date"
+                {...register("dateOfBirth", { required: true })}
+                className="input input-bordered w-full input-accent"
+              />
+              {errors.dateOfBirth && (
+                <span className="text-red-500 text-sm">
+                  Date of Birth is required
+                </span>
+              )}
+            </div>
 
-          {/* Password field */}
-          <label className="label">Password</label>
-          <input type="password" {...register('password', {required:true, minLength: 6, pattern: /^[A-Za-z]+$/i})}className="input md:w-[400px]" placeholder="Password" />
-          {errors.password?.type==='required' && <p className="text-red-500">Password is required.</p>}
-          {
-            errors.password?.type==='minLength' && <p className="text-red-500">Password must be 6 characters or longer</p>
-          }
-          {
-            errors.password?.type==='pattern' && <p className="text-red-500">password must have </p>
-          }
+            {/* Email */}
+            <div className="form-control w-full">
+              <label className="label">
+                <span className="label-text font-semibold">Email</span>
+              </label>
+              <input
+                type="email"
+                {...register("email", { required: true })}
+                placeholder="Email"
+                className="input input-bordered w-full input-primary"
+              />
+              {errors.email && (
+                <span className="text-red-500 text-sm">Email is required</span>
+              )}
+            </div>
 
+            {/* Password */}
+            <div className="form-control w-full">
+              <label className="label">
+                <span className="label-text font-semibold">Password</span>
+              </label>
+              <input
+                type="password"
+                {...register("password", { required: true, minLength: 6 })}
+                placeholder="Password"
+                className="input input-bordered w-full input-secondary"
+              />
+              {errors.password?.type === "required" && (
+                <span className="text-red-500 text-sm">
+                  Password is required
+                </span>
+              )}
+              {errors.password?.type === "minLength" && (
+                <span className="text-red-500 text-sm">
+                  Password must be at least 6 characters
+                </span>
+              )}
+            </div>
 
-          <div>
-            <a className="link link-hover">Forgot password?</a>
-          </div>
-          <button className="btn btn-neutral mt-4">Login</button>
-        </fieldset>
-        <p className="text-center">Already have an account? <Link state={location.state} className="text-blue-400 underline" to="/login">Login</Link></p>
-      </form>
+            <button className="btn btn-primary w-full mt-4 hover:scale-105 transition-transform">
+              Register
+            </button>
+          </form>
+
+          <p className="text-center text-base-content/60 mt-6">
+            Already have an account?{" "}
+            <button
+              className="px-6 cursor-pointer text-accent"
+              onClick={() => document.getElementById("my_modal_4").showModal()}
+            >
+              Sign in
+            </button>
+            <dialog id="my_modal_4" className="modal">
+              <div className="modal-box w-11/12 max-w-5xl">
+                <Login></Login>
+                <div className="modal-action">
+                  <form method="dialog">
+                    {/* if there is a button, it will close the modal */}
+                    <button className="btn">Close</button>
+                  </form>
+                </div>
+              </div>
+            </dialog>
+          </p>
+        </div>
+      </div>
     </div>
   );
 };

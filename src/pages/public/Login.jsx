@@ -4,47 +4,68 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { signInUser } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
 
-
-    const { register, handleSubmit, formState: {errors} } = useForm();
-    const { signInUser } = useAuth();
-    const location = useLocation();
-    const navigate = useNavigate();
-
-    const handleLogin = (data) =>{
-        signInUser(data.email, data.password).then(result => {
-            console.log(result.user);
-            navigate(location?.state || '/')
-        }).catch(error => {
-            console.log(error);
-        })
-    }
+  const handleLogin = (data) => {
+    signInUser(data.email, data.password)
+      .then(result => {
+        console.log(result.user);
+        navigate(location?.state || "/");
+      })
+      .catch(error => console.log(error));
+  };
 
   return (
-    <div className="card bg-base-100 w-full mx-auto shrink-0 shadow-2xl p-10">
-        <h3 className="text-3xl text-center">Welcome back</h3>
-        <p className="text-center">Please login</p>
-      <form className="card-body" onSubmit={handleSubmit(handleLogin)}>
-        <fieldset className="fieldset mx-auto">
-          <label className="label">Email</label>
-          <input type="email" {...register('email',{ require: true} )} className="input md:w-[400px]" placeholder="Email" />
-          {
-            errors.email?.type === 'required' && <p className="text-red-500">Email is required</p>
-          }
-          <label className="label">Password</label>
-          <input type="password" {...register('password', {required: true, minLength: 6})} className="input md:w-[400px]" placeholder="Password" />
-          {
-            errors.password?.type === 'minLength' && <p className="text-red-500">Password must be 6 characters longer</p>
-          }
-          <div>
-            <a className="link link-hover">Forgot password?</a>
+    <div className="flex items-center justify-center my-40 bg-base-100">
+      <div className="w-full max-w-md bg-base-200 rounded-2xl shadow-lg p-8">
+        <h3 className="text-3xl font-bold text-primary text-center mb-2">Welcome Back</h3>
+        <p className="text-center text-base-content/70 mb-6">Please login to your account</p>
+
+        <form onSubmit={handleSubmit(handleLogin)} className="space-y-4">
+          {/* Email */}
+          <div className="form-control w-full">
+            <label className="label"><span className="label-text font-semibold text-secondary">Email</span></label>
+            <input
+              type="email"
+              {...register("email", { required: true })}
+              placeholder="Email"
+              className="input input-bordered w-full border-base-300 input-primary focus:border-primary focus:ring-primary"
+            />
+            {errors.email && (
+              <span className="text-accent text-sm mt-1">Email is required</span>
+            )}
           </div>
-          <button className="btn btn-neutral mt-4">Login</button>
-        </fieldset>
-        <p className="text-center">New to AssetVerse? <br />
-        <Link state={location.state} className="text-blue-800 underline" to="/register-hr">Register as HR</Link><br />
-        <Link state={location.state} className="text-blue-400 underline" to="/register-employee">Register as employee</Link></p>
-      </form>
+
+          {/* Password */}
+          <div className="form-control w-full">
+            <label className="label"><span className="label-text font-semibold text-secondary">Password</span></label>
+            <input
+              type="password"
+              {...register("password", { required: true, minLength: 6 })}
+              placeholder="Password"
+              className="input input-bordered w-full border-base-300 input-secondary focus:border-primary focus:ring-primary"
+            />
+            {errors.password?.type === "required" && (
+              <span className="text-accent text-sm mt-1">Password is required</span>
+            )}
+            {errors.password?.type === "minLength" && (
+              <span className="text-accent text-sm mt-1">Password must be at least 6 characters</span>
+            )}
+          </div>
+
+          <div className="text-right">
+            <a className="link link-hover text-accent font-semibold">Forgot password?</a>
+          </div>
+
+          <button className="btn btn-primary w-full mt-4 hover:scale-105 transition-transform">
+            Login
+          </button>
+        </form>
+
+      </div>
     </div>
   );
 };
