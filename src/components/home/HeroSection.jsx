@@ -58,7 +58,7 @@ const HeroSection = () => {
           </Link>
 
           <Link
-            to="/signup"
+            to="/register-hr"
             className="px-8 py-3 rounded-lg border border-white/40 text-white font-semibold hover:bg-white/10 transition"
           >
             Get Started

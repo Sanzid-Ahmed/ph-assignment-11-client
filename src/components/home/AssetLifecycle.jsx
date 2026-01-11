@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 console.log(motion)
 import { FaShoppingCart, FaUserCheck, FaTools, FaHistory, FaRecycle } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const steps = [
   {
@@ -99,9 +100,9 @@ const AssetLifecycle = () => {
             <h4 className="font-bold text-lg text-base-content">Ready to automate this cycle?</h4>
             <p className="text-sm">Join 500+ companies managing assets intelligently.</p>
           </div>
-          <button className="btn btn-primary px-8 rounded-full shadow-lg hover:shadow-primary/30">
+          <Link to="/register-hr" className="btn btn-primary px-8 rounded-full shadow-lg hover:shadow-primary/30">
             Start Free Trial
-          </button>
+          </Link>
         </motion.div>
       </div>
     </section>

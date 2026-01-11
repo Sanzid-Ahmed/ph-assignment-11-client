@@ -6,9 +6,10 @@ const AuthLayout = () => {
     return (
         <div className="min-h-screen relative flex flex-col bg-base-100 overflow-hidden">
             {/* 1. Fixed Navbar */}
-            <div className="relative z-50">
+            <div className="fixed top-0 left-0 w-full z-50">
                 <Navbar />
             </div>
+
 
             {/* 2. Modern Background Layering */}
             <div className="absolute inset-0 z-0 pointer-events-none">
@@ -30,7 +31,7 @@ const AuthLayout = () => {
             <main className="relative z-10 flex-grow flex items-center justify-center px-4 py-12">
                 <div className="w-full max-w-[1400px] mx-auto flex flex-col items-center">
                     {/* The content from Outlet (Login/Register cards) will float here */}
-                    <div className="w-full flex justify-center transform transition-all duration-500">
+                    <div className="w-full flex justify-center transform transition-all duration-500 mt-15">
                         <Outlet />
                     </div>
                 </div>
