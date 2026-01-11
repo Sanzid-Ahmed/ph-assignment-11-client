@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 console.log(motion)
 import { FaShoppingCart, FaUserCheck, FaTools, FaHistory, FaRecycle } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
 const steps = [
   {
@@ -38,6 +39,8 @@ const steps = [
 ];
 
 const AssetLifecycle = () => {
+    const { user } = useAuth();
+
   return (
     <section className="py-24 w-10/12 mx-auto backdrop-blur-xl bg-neutral/30 relative rounded-2xl overflow-hidden">
       <div className="container mx-auto px-6 text-center">
@@ -100,9 +103,17 @@ const AssetLifecycle = () => {
             <h4 className="font-bold text-lg text-base-content">Ready to automate this cycle?</h4>
             <p className="text-sm">Join 500+ companies managing assets intelligently.</p>
           </div>
-          <Link to="/register-hr" className="btn btn-primary px-8 rounded-full shadow-lg hover:shadow-primary/30">
-            Start Free Trial
+          {user?(
+            <Link
+            to="/dashboard/hr-alytics"
+            className="px-8 py-3 rounded-lg bg-primary text-white font-semibold hover:bg-primary/90 transition"
+          >
+            Dashboard
           </Link>
+          )
+          :(<Link to="/register-hr" className="btn btn-primary px-8 rounded-full shadow-lg hover:shadow-primary/30">
+            Start Free Trial
+          </Link>)}
         </motion.div>
       </div>
     </section>

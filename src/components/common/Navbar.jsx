@@ -41,6 +41,12 @@ const Navbar = () => {
         </NavLink>
       </li>
 
+      
+    </>
+  );
+
+  const extra2 = (
+    <>
       <li>
         <NavLink to="/features" className="flex items-center gap-2">
           <Icon icon="fluent:star-24-filled" width={22} />
@@ -48,8 +54,7 @@ const Navbar = () => {
         </NavLink>
       </li>
     </>
-  );
-
+  )
   // Extra links
   const extra = (
     <>
@@ -66,7 +71,7 @@ const Navbar = () => {
   const publicLinks = (
     <>
       {homeLink}
-
+      {extra2}
       <li>
         <NavLink to="/register-hr" className="flex items-center gap-2">
           <Icon icon="fluent:person-briefcase-24-filled" width={22} />
@@ -80,7 +85,6 @@ const Navbar = () => {
           Join as Employee
         </NavLink>
       </li>
-
       {extra}
     </>
   );

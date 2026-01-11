@@ -2,8 +2,12 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 console.log(motion)
 import heroImg from "../../assets/nik-7I4u37HwA08-unsplash.jpg";
+import useAuth from "../../hooks/useAuth";
 
 const HeroSection = () => {
+
+    const { user } = useAuth();
+
   return (
     <div>
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -44,7 +48,20 @@ const HeroSection = () => {
         </motion.p>
 
         {/* Buttons */}
-        <motion.div
+        {user?
+        (<motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.8 }}
+          className="mt-10 flex flex-col sm:flex-row gap-4 justify-center"
+        >
+          <Link
+            to="/dashboard/hr-alytics"
+            className="px-8 py-3 rounded-lg bg-primary text-white font-semibold hover:bg-primary/90 transition"
+          >
+            Dashboard
+          </Link>
+        </motion.div>):(<motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.8 }}
@@ -63,7 +80,8 @@ const HeroSection = () => {
           >
             Get Started
           </Link>
-        </motion.div>
+        </motion.div>)
+        }
 
         {/* Trust Indicators */}
         <motion.div

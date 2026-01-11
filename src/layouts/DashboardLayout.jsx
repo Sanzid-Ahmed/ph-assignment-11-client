@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import useRole from "../hooks/useRole";
 import useAuth from "../hooks/useAuth";
@@ -15,11 +15,28 @@ import {
   FiMenu,
   FiPieChart,
 } from "react-icons/fi";
+import Logo from "../components/common/Logo";
 
 const DashboardLayout = () => {
   const { role } = useRole();
-  const { logOut } = useAuth();
+  const { user, logOut } = useAuth();
   const navigate = useNavigate();
+
+
+
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+    useEffect(() => {
+      document.documentElement.setAttribute("data-theme", theme);
+      localStorage.setItem("theme", theme);
+    }, [theme]);
+    const toggleTheme = (e) => {
+      if (e.target.checked) {
+        setTheme("dark");
+      } else {
+        setTheme("light");
+      }
+    };
+  
 
   const handleLogout = () => {
     logOut()
@@ -37,23 +54,73 @@ const DashboardLayout = () => {
         
         <div className="drawer-content flex flex-col">
           {/* Top Navbar */}
-          <nav className="navbar w-full bg-base-100 border-b border-base-200 px-4 sticky top-0 z-20">
+          <nav className="navbar bg-base-100 border-b border-base-200 px-4 sticky top-0 z-20 min-h-20 w-11/12 lg:w-12/15 mx-auto">
             <div className="flex-none lg:hidden">
               <label htmlFor="my-drawer-4" className="btn btn-square btn-ghost">
                 <FiMenu className="size-6" />
               </label>
             </div>
+
             <div className="flex-1 px-2 font-black text-2xl tracking-tight">
-              <Link to="/" className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white text-base">A</div>
-                Asset<span className="text-primary">Verse</span>
-              </Link>
+              <Logo></Logo>
             </div>
-            <div className="flex-none hidden lg:block">
-               <span className="badge badge-primary badge-outline uppercase font-bold text-xs p-3">
-                 {role === 'hr' ? 'HR Manager' : 'Employee'} Mode
-               </span>
+            
+            
+            <div className="flex-none">
+               <div className="dropdown dropdown-end">
+                   <div
+                     tabIndex={0}
+                     role="button"
+                     className="btn btn-ghost btn-circle avatar border border-base-300"
+                   >
+                     <div className="w-10 rounded-full">
+                       <img
+                         alt="User Profile"
+                         src={user?.photoURL || "https://i.ibb.co.com/mR7093X/user-placeholder.png"}
+                       />
+                     </div>
+                   </div>
+                   <ul
+                     tabIndex={0}
+                     className="mt-3 z-[1] p-3 shadow-xl menu menu-sm dropdown-content bg-base-100 rounded-box w-60 border border-base-200"
+                   >
+                     {/* User Name Header */}
+                     <li className="px-4 py-2 font-black text-primary truncate border-b border-base-200 mb-2">
+                       {user?.displayName || "User"}
+                     </li>
+               
+                     {/* Profile Link */}
+                     <li>
+                       <Link to={role === "hr" ? "/dashboard/hr-profile" : "/dashboard/employee-profile"}>
+                         <FiUser className="text-lg" /> Profile
+                       </Link>
+                     </li>
+               
+                     {/* Theme Toggle Section - Moved inside for cleaner look */}
+                     <li className="border-y border-base-200 my-1 py-1">
+                       <div className="flex justify-between items-center active:bg-transparent hover:bg-transparent">
+                         <span className="flex items-center gap-2 font-medium">
+                            {theme === "dark" ? "🌙 Dark Mode" : "☀️ Light Mode"}
+                         </span>
+                         <input
+                           type="checkbox"
+                           className="toggle toggle-primary toggle-sm"
+                           onChange={toggleTheme}
+                           checked={theme === "dark"}
+                         />
+                       </div>
+                     </li>
+               
+                     {/* Logout Button */}
+                     <li>
+                       <button onClick={handleLogout} className="text-error font-bold">
+                         <FiLogOut className="text-lg" /> Logout
+                       </button>
+                     </li>
+                   </ul>
+                 </div>
             </div>
+            
           </nav>
 
           {/* Page Content Holder */}
