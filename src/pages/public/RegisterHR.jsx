@@ -66,7 +66,7 @@ const RegisterHR = () => {
   return (
     <div className="lg:grid lg:grid-cols-2 min-h-screen bg-base-100">
       {/* Left: HR Hero */}
-      <div className="hidden lg:block">
+      <div className="hidden lg:block ml-15">
         <HRHero />
       </div>
 

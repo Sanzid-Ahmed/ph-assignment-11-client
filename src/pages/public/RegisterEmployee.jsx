@@ -65,7 +65,7 @@ const RegisterEmployee = () => {
   return (
     <div className="lg:grid lg:grid-cols-2 min-h-screen bg-base-100">
       {/* Left: Employee Hero */}
-      <div className="hidden lg:block">
+      <div className="hidden lg:block ml-15">
         <EmployeeHero />
       </div>
 
