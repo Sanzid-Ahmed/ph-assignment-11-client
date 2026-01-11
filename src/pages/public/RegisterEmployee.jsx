@@ -173,6 +173,25 @@ const RegisterEmployee = () => {
             <button className="btn btn-primary w-full mt-4 hover:scale-105 transition-transform">
               Register
             </button>
+             {/* Demo Buttons */}
+  
+            <button
+              className="btn w-full bounce bg-red-500 px-6 cursor-pointer"
+              onClick={() => document.getElementById("my_modal_4").showModal()}
+            >
+              Demo Employee Login
+            </button>
+            <dialog id="my_modal_4" className="modal">
+              <div className="modal-box w-11/12 max-w-5xl">
+                <Login></Login>
+                <div className="modal-action">
+                  <form method="dialog">
+                    {/* if there is a button, it will close the modal */}
+                    <button className="btn">Close</button>
+                  </form>
+                </div>
+              </div>
+            </dialog>
           </form>
 
           <p className="text-center text-base-content/60 mt-6">

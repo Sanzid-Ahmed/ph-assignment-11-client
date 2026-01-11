@@ -1,10 +1,10 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm();
   const { signInUser } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
@@ -16,6 +16,19 @@ const Login = () => {
         navigate(location?.state || "/");
       })
       .catch(error => console.log(error));
+  };
+
+  // Demo login function
+  const handleDemoLogin = (role) => {
+    if (role === "hr") {
+      setValue("email", "hitlar12@gmail.com");
+      setValue("password", "abcdef");
+      handleSubmit(handleLogin)({ email: "hitlar12@gmail.com", password: "abcdef" });
+    } else if (role === "employee") {
+      setValue("email", "boltu@gmail.com");
+      setValue("password", "abcdef");
+      handleSubmit(handleLogin)({ email: "boltu@gmail.com", password: "abcdef" });
+    }
   };
 
   return (
@@ -64,6 +77,22 @@ const Login = () => {
             Login
           </button>
         </form>
+
+        {/* Demo Buttons */}
+        <div className="mt-6 flex flex-col gap-3">
+  <button
+    onClick={() => handleDemoLogin("hr")}
+    className="btn btn-outline bg-red-600 w-full bounce text-white hover:bg-red-700"
+  >
+    Demo HR Login
+  </button>
+  <button
+    onClick={() => handleDemoLogin("employee")}
+    className="btn btn-outline bg-blue-500 w-full bounce text-white hover:bg-blue-600"
+  >
+    Demo Employee Login
+  </button>
+</div>
 
       </div>
     </div>
