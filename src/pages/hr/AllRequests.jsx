@@ -37,11 +37,11 @@ const AllRequests = () => {
     if (user?.email) fetchRequests();
   }, [user?.email]);
 
-  /* ================= FILTERING & PAGINATION LOGIC ================= */
   const filteredRequests = useMemo(() => {
+    const query = search.trim().toLowerCase();
     return requests.filter((req) =>
-      req.requesterName.toLowerCase().includes(search.toLowerCase()) ||
-      req.requesterEmail.toLowerCase().includes(search.toLowerCase())
+      req.requesterName.toLowerCase().includes(query) ||
+      req.requesterEmail.toLowerCase().includes(query)
     );
   }, [requests, search]);
 
@@ -51,7 +51,6 @@ const AllRequests = () => {
     return filteredRequests.slice(start, start + itemsPerPage);
   }, [filteredRequests, currentPage, itemsPerPage]);
 
-  /* ================= ACTIONS ================= */
   const handleApprove = async (request) => {
     try {
       const assetCheck = await axiosSecure.get(`/assets/${request.assetId}`);
@@ -85,7 +84,7 @@ const AllRequests = () => {
       text: "This action will notify the employee.",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#EF4444",
+      confirmButtonColor: "#f5c242", // amber accent
       confirmButtonText: "Yes, Reject",
     }).then(async (result) => {
       if (result.isConfirmed) {
@@ -117,29 +116,29 @@ const AllRequests = () => {
   const hasAccess = employeeCount < (userData?.packageLimit || 0);
 
   return (
-    <div className="p-4 md:p-8 bg-[#f9fafb] min-h-screen">
+    <div className="p-4 md:p-8 bg-base-100 min-h-screen">
       {hasAccess ? (
         <div className="max-w-7xl mx-auto space-y-6">
           {/* Header Card */}
-          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 bg-base-200 p-6 rounded-2xl shadow-md border border-base-300">
             <div>
-              <h2 className="text-3xl font-black text-gray-800">Pending Requests</h2>
+              <h2 className="text-3xl font-black text-secondary">Pending Requests</h2>
               <p className="text-gray-500 mt-1">Review and manage asset distributions</p>
             </div>
             
             <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">
               <div className="relative flex-grow lg:flex-grow-0">
-                <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral" />
                 <input
                   type="text"
                   placeholder="Search requester..."
-                  className="input input-bordered w-full lg:w-72 pl-10 bg-gray-50 border-gray-200"
+                  className="input input-bordered w-full lg:w-72 pl-10 bg-base-100 border-base-300 focus:border-primary focus:ring-primary"
                   onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
                 />
               </div>
 
               <select 
-                className="select select-bordered bg-gray-50"
+                className="select select-bordered bg-base-100 border-base-300 focus:border-primary focus:ring-primary"
                 value={itemsPerPage}
                 onChange={(e) => { setItemsPerPage(Number(e.target.value)); setCurrentPage(1); }}
               >
@@ -151,10 +150,10 @@ const AllRequests = () => {
           </div>
 
           {/* Table Container */}
-          <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-200">
+          <div className="bg-base-200 rounded-2xl shadow-md overflow-hidden border border-base-300">
             <div className="overflow-x-auto">
               <table className="table w-full">
-                <thead className="bg-gray-50 text-gray-600 uppercase text-[11px] font-bold tracking-wider">
+                <thead className="bg-neutral text-secondary uppercase text-[11px] font-bold tracking-wider">
                   <tr>
                     <th className="py-4 px-6">Asset Information</th>
                     <th>Requested By</th>
@@ -164,7 +163,7 @@ const AllRequests = () => {
                     <th className="text-center">Manage</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-base-300">
                   {loading ? (
                     <tr>
                       <td colSpan="6" className="text-center py-24">
@@ -173,31 +172,31 @@ const AllRequests = () => {
                     </tr>
                   ) : paginatedRequests.length > 0 ? (
                     paginatedRequests.map((req) => (
-                      <tr key={req._id} className="hover:bg-gray-50/50 transition-colors">
+                      <tr key={req._id} className="hover:bg-base-300/30 transition-colors">
                         <td className="py-4 px-6">
-                          <div className="font-bold text-gray-800">{req.assetName}</div>
-                          <div className="text-[10px] font-bold text-primary bg-primary/5 px-2 py-0.5 rounded-md inline-block mt-1 uppercase">
+                          <div className="font-bold text-secondary">{req.assetName}</div>
+                          <div className="text-[10px] font-bold text-primary bg-primary/20 px-2 py-0.5 rounded-md inline-block mt-1 uppercase">
                             {req.assetType}
                           </div>
                         </td>
                         <td>
-                          <div className="font-semibold text-gray-700">{req.requesterName}</div>
-                          <div className="text-xs text-gray-400 font-medium">{req.requesterEmail}</div>
+                          <div className="font-semibold text-secondary">{req.requesterName}</div>
+                          <div className="text-xs text-neutral font-medium">{req.requesterEmail}</div>
                         </td>
-                        <td className="text-gray-500 text-sm">
+                        <td className="text-neutral text-sm">
                           {new Date(req.requestDate).toLocaleDateString('en-US', {
                              month: 'short', day: 'numeric', year: 'numeric'
                           })}
                         </td>
                         <td className="max-w-[180px]">
-                          <p className="text-xs italic text-gray-400 line-clamp-2" title={req.note}>
+                          <p className="text-xs italic text-neutral line-clamp-2" title={req.note}>
                             {req.note || "No specific notes..."}
                           </p>
                         </td>
                         <td>
                           <div className={`badge badge-sm font-bold border-none px-3 py-2.5 ${
-                            req.requestStatus === "pending" ? "bg-amber-100 text-amber-700" :
-                            req.requestStatus === "approved" ? "bg-emerald-100 text-emerald-700" :
+                            req.requestStatus === "pending" ? "bg-accent/20 text-accent" :
+                            req.requestStatus === "approved" ? "bg-primary/20 text-primary" :
                             "bg-rose-100 text-rose-700"
                           }`}>
                             {req.requestStatus.toUpperCase()}
@@ -208,19 +207,19 @@ const AllRequests = () => {
                             <div className="flex justify-center gap-2">
                               <button
                                 onClick={() => handleApprove(req)}
-                                className="btn btn-sm btn-success text-white shadow-sm hover:scale-105 transition-transform"
+                                className="btn btn-sm bg-primary text-white hover:bg-secondary shadow-sm hover:scale-105 transition-transform"
                               >
                                 Approve
                               </button>
                               <button
                                 onClick={() => handleReject(req._id)}
-                                className="btn btn-sm btn-ghost text-rose-500 hover:bg-rose-50"
+                                className="btn btn-sm btn-ghost text-accent hover:bg-accent/10"
                               >
                                 Reject
                               </button>
                             </div>
                           ) : (
-                            <span className="text-[10px] font-black text-gray-300 uppercase tracking-tighter">Processed</span>
+                            <span className="text-[10px] font-black text-neutral/60 uppercase tracking-tighter">Processed</span>
                           )}
                         </td>
                       </tr>
@@ -229,8 +228,8 @@ const AllRequests = () => {
                     <tr>
                       <td colSpan="6" className="text-center py-20">
                         <div className="flex flex-col items-center opacity-40">
-                          <FiAlertCircle size={48} className="mb-2" />
-                          <p className="font-bold">No matching requests found</p>
+                          <FiAlertCircle size={48} className="mb-2 text-accent" />
+                          <p className="font-bold text-secondary">No matching requests found</p>
                         </div>
                       </td>
                     </tr>
@@ -241,11 +240,11 @@ const AllRequests = () => {
 
             {/* Pagination UI */}
             {!loading && totalPages > 1 && (
-              <div className="p-5 flex flex-col sm:flex-row items-center justify-between border-t border-gray-100 bg-gray-50/30 gap-4">
-                <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">
+              <div className="p-5 flex flex-col sm:flex-row items-center justify-between border-t border-base-300 bg-base-200/50 gap-4">
+                <span className="text-xs font-bold text-neutral uppercase tracking-widest">
                   Page {currentPage} of {totalPages}
                 </span>
-                <div className="join bg-white border border-gray-200">
+                <div className="join bg-base-100 border border-base-300">
                   <button 
                     className="join-item btn btn-sm px-4" 
                     disabled={currentPage === 1}
@@ -277,22 +276,22 @@ const AllRequests = () => {
       ) : (
         /* Package Limit UI */
         <div className="min-h-[70vh] flex items-center justify-center p-6">
-          <div className="card w-full max-w-md bg-white shadow-2xl rounded-3xl overflow-hidden border border-gray-100">
+          <div className="card w-full max-w-md bg-base-200 shadow-2xl rounded-3xl overflow-hidden border border-base-300">
             <div className="h-2 bg-primary"></div>
             <div className="card-body items-center text-center p-10">
-              <div className="bg-primary/10 p-5 rounded-full mb-4 animate-bounce">
+              <div className="bg-primary/20 p-5 rounded-full mb-4 animate-bounce">
                 <FiTrendingUp className="size-12 text-primary" />
               </div>
-              <h2 className="text-2xl font-black text-gray-800">Growth Required!</h2>
-              <p className="text-gray-500 text-sm leading-relaxed">
-                You've hit your staff limit of <span className="font-bold text-gray-800">{userData.packageLimit}</span>. 
+              <h2 className="text-2xl font-black text-secondary">Growth Required!</h2>
+              <p className="text-neutral text-sm leading-relaxed">
+                You've hit your staff limit of <span className="font-bold text-secondary">{userData.packageLimit}</span>. 
                 Upgrade now to process more requests and empower your growing team.
               </p>
               <div className="card-actions mt-8 w-full flex flex-col gap-3">
                 <Link to="/dashboard/upgrade" className="btn btn-primary w-full text-white shadow-lg shadow-primary/30">
                   Upgrade My Package
                 </Link>
-                <Link to="/dashboard/home" className="btn btn-ghost text-gray-400 btn-sm">
+                <Link to="/dashboard/home" className="btn btn-ghost text-neutral btn-sm">
                   Return to Dashboard
                 </Link>
               </div>

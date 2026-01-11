@@ -8,7 +8,6 @@ import {
   FaBuilding,
   FaEnvelope,
   FaGem,
-  FaUpload,
   FaCamera,
   FaUsers,
   FaSave,
@@ -83,22 +82,32 @@ const HrProfile = () => {
 
   return (
     <div className="p-4 md:p-8 bg-base-200 min-h-screen">
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
         <div className="mb-8">
-          <h2 className="text-4xl font-extrabold text-neutral tracking-tight">Account Settings</h2>
-          <p className="text-gray-500">Manage your HR profile and company credentials</p>
+          <h2 className="text-4xl font-extrabold text-secondary tracking-tight">
+            Account Settings
+          </h2>
+          <p className="text-gray-500">
+            Manage your HR profile and company credentials
+          </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          
+          {/* Profile & Stats */}
           <div className="lg:col-span-4 space-y-6">
+            {/* Profile Card */}
             <div className="card bg-base-100 shadow-xl border-t-4 border-primary overflow-hidden">
               <div className="card-body p-0">
                 <div className="h-24 bg-primary/10 w-full flex items-end justify-center">
                   <div className="avatar -mb-12">
                     <div className="w-28 rounded-full ring ring-white ring-offset-base-100 ring-offset-2 shadow-2xl bg-base-100">
                       <img
-                        src={user?.photoURL || user?.profileImage || "https://i.ibb.co/mJR9Qxc/user.png"}
+                        src={
+                          user?.photoURL ||
+                          user?.profileImage ||
+                          "https://i.ibb.co/mJR9Qxc/user.png"
+                        }
                         alt="Profile"
                       />
                     </div>
@@ -106,7 +115,7 @@ const HrProfile = () => {
                 </div>
 
                 <div className="pt-16 pb-6 px-6 text-center">
-                  <h3 className="text-2xl font-bold text-neutral">
+                  <h3 className="text-2xl font-bold text-secondary">
                     {user?.displayName || user?.name}
                   </h3>
                   <div className="badge badge-primary badge-outline mt-1 font-semibold uppercase text-xs tracking-widest">
@@ -117,54 +126,72 @@ const HrProfile = () => {
 
                   <div className="space-y-4 text-left">
                     <div className="flex items-center gap-3 text-sm text-gray-600">
-                      <div className="p-2 bg-base-200 rounded-lg"><FaEnvelope className="text-primary" /></div>
+                      <div className="p-2 bg-base-200 rounded-lg">
+                        <FaEnvelope className="text-primary" />
+                      </div>
                       <span className="truncate">{user?.email}</span>
                     </div>
                     <div className="flex items-center gap-3 text-sm text-gray-600">
-                      <div className="p-2 bg-base-200 rounded-lg"><FaBuilding className="text-primary" /></div>
+                      <div className="p-2 bg-base-200 rounded-lg">
+                        <FaBuilding className="text-primary" />
+                      </div>
                       <span>{userData?.companyName || "No Company Set"}</span>
                     </div>
                     <div className="flex items-center gap-3 text-sm text-gray-600">
-                      <div className="p-2 bg-base-200 rounded-lg"><FaGem className="text-warning" /></div>
-                      <span className="font-bold">{userData?.subscription || "Standard"} Tier</span>
+                      <div className="p-2 bg-base-200 rounded-lg">
+                        <FaGem className="text-accent" />
+                      </div>
+                      <span className="font-bold">
+                        {userData?.subscription || "Standard"} Tier
+                      </span>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
 
+            {/* Team Usage Card */}
             <div className="card bg-neutral text-neutral-content shadow-xl">
               <div className="card-body p-6">
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-sm font-medium opacity-70">Team Usage</span>
                   <FaUsers className="text-primary" />
                 </div>
-                <div className="text-3xl font-bold">
-                  {employeeCount} <span className="text-sm font-normal opacity-50">/ {packageLimit} Members</span>
+                <div className="text-3xl font-bold text-secondary">
+                  {employeeCount}{" "}
+                  <span className="text-sm font-normal opacity-50">
+                    / {packageLimit} Members
+                  </span>
                 </div>
-                <progress 
-                  className={`progress w-full mt-2 ${progressPercent > 80 ? 'progress-error' : 'progress-primary'}`} 
-                  value={employeeCount} 
+                <progress
+                  className={`progress w-full mt-2 ${
+                    progressPercent > 80 ? "progress-error" : "progress-primary"
+                  }`}
+                  value={employeeCount}
                   max={packageLimit}
                 ></progress>
-                <p className="text-[10px] mt-2 opacity-40 uppercase tracking-tighter">Your package allows up to {packageLimit} seats.</p>
+                <p className="text-[10px] mt-2 opacity-40 uppercase tracking-tighter">
+                  Your package allows up to {packageLimit} seats.
+                </p>
               </div>
             </div>
           </div>
 
+          {/* Edit Form */}
           <div className="lg:col-span-8">
             <div className="card bg-base-100 shadow-xl border border-base-300">
               <div className="card-body p-6 md:p-10">
                 <div className="flex items-center gap-2 mb-6">
-                  <div className="h-8 w-1 bg-primary rounded-full" />
-                  <h3 className="text-xl font-bold">General Information</h3>
+                  <div className="h-1 w-12 bg-primary rounded-full" />
+                  <h3 className="text-xl font-bold text-secondary">General Information</h3>
                 </div>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Full Name */}
                     <div className="form-control w-full">
-                      <label className="label">
-                        <span className="label-text font-bold">Full Name</span>
+                      <label className="label font-bold">
+                        Full Name
                       </label>
                       <div className="relative">
                         <input
@@ -176,9 +203,10 @@ const HrProfile = () => {
                       </div>
                     </div>
 
+                    {/* Company Name */}
                     <div className="form-control w-full">
-                      <label className="label">
-                        <span className="label-text font-bold">Company Name</span>
+                      <label className="label font-bold">
+                        Company Name
                       </label>
                       <div className="relative">
                         <input
@@ -191,9 +219,10 @@ const HrProfile = () => {
                     </div>
                   </div>
 
+                  {/* Email */}
                   <div className="form-control w-full">
-                    <label className="label">
-                      <span className="label-text font-bold opacity-50">Email Address (Non-editable)</span>
+                    <label className="label font-bold opacity-50">
+                      Email Address (Non-editable)
                     </label>
                     <input
                       value={user?.email || ""}
@@ -202,19 +231,22 @@ const HrProfile = () => {
                     />
                   </div>
 
+                  {/* Profile Picture */}
                   <div className="form-control w-full">
-                    <label className="label">
-                      <span className="label-text font-bold">Update Profile Picture</span>
-                    </label>
+                    <label className="label font-bold">Update Profile Picture</label>
                     <div className="flex items-center justify-center w-full">
                       <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-xl cursor-pointer bg-base-200 border-base-300 hover:bg-base-300 transition-all">
                         <div className="flex flex-col items-center justify-center pt-5 pb-6">
                           {selectedImage?.length > 0 ? (
-                            <p className="text-sm text-primary font-bold">File Selected: {selectedImage[0].name}</p>
+                            <p className="text-sm text-primary font-bold">
+                              File Selected: {selectedImage[0].name}
+                            </p>
                           ) : (
                             <>
                               <FaCamera className="text-2xl text-gray-400 mb-2" />
-                              <p className="text-xs text-gray-500 font-semibold uppercase">Click to upload new photo</p>
+                              <p className="text-xs text-gray-500 font-semibold uppercase">
+                                Click to upload new photo
+                              </p>
                             </>
                           )}
                         </div>
@@ -223,15 +255,18 @@ const HrProfile = () => {
                     </div>
                   </div>
 
+                  {/* Save Button */}
                   <div className="card-actions justify-end mt-4">
                     <button
                       disabled={loading}
-                      className="btn btn-primary btn-block md:w-auto md:px-12 shadow-lg"
+                      className="btn btn-primary btn-block md:w-auto md:px-12 shadow-lg text-white flex items-center justify-center gap-2"
                     >
                       {loading ? (
                         <span className="loading loading-spinner"></span>
                       ) : (
-                        <><FaSave className="mr-2" /> Save Profile</>
+                        <>
+                          <FaSave /> Save Profile
+                        </>
                       )}
                     </button>
                   </div>
